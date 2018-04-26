@@ -1,0 +1,27 @@
+<launch>
+    <node pkg="map_server" type="map_server" name="map_server" args="$(find autolabor_simulation_stage)/map/MG_map.yaml" />
+
+    <node name="simulation_stage" pkg="autolabor_simulation_stage" type="simulation_stage_node" output="screen">
+	<param name="input_topic" value="map" />
+	<param name="output_topic" value="stage_map" />
+	<param name="real_map_frame" value="real_map" />
+    </node>
+
+    <node name="simulation_lidar" pkg="autolabor_simulation_lidar" type="simulation_lidar_node" output="screen">
+	<param name="min_angle" value="-3.141592654" />
+	<param name="max_angle" value="3.141592654" />
+
+	<param name="min_distance" value="0.15" />
+	<param name="max_distance" value="6.00" />
+
+	<param name="size" value="400" />
+	<param name="rate" value="10" />
+        <param name="noise" value="0.01" />
+
+	<param name="stage_map_topic" value="stage_map" />
+	<param name="global_frame" value="real_map" />
+	<param name="lidar_frame" value="lidar" />
+    </node>
+
+    <node pkg="tf" type="static_transform_publisher" name="map_to_lidar" args="0.0 0.0 0.0 0.0 0.0 0.0 /real_map /lidar 10" />    
+</launch>

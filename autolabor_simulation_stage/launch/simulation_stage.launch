@@ -1,0 +1,9 @@
+<launch>
+    <node pkg="map_server" type="map_server" name="map_server" args="$(find autolabor_simulation_stage)/map/MG_map.yaml" />
+
+    <node name="simulation_stage" pkg="autolabor_simulation_stage" type="simulation_stage_node" output="screen">
+	<param name="input_topic" value="map" />
+	<param name="output_topic" value="stage_map" />
+	<param name="real_map_frame" value="map" />
+    </node>
+</launch>
