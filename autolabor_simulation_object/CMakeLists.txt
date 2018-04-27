@@ -28,6 +28,8 @@ include_directories(
 
 add_executable(simulation_object_node src/simulation_object_node.cpp)
 
+add_dependencies(simulation_object_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 target_link_libraries(simulation_object_node
   ${catkin_LIBRARIES}
 )

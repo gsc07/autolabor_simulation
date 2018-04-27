@@ -1,0 +1,17 @@
+<launch>
+    <node pkg="map_server" type="map_server" name="map_server" args="$(find autolabor_simulation_stage)/map/MG_map.yaml" />
+
+    <node name="simulation_stage" pkg="autolabor_simulation_stage" type="simulation_stage_node" output="screen">
+	<param name="input_topic" value="map" />
+	<param name="output_topic" value="stage_map" />
+	<param name="real_map_frame" value="real_map" />
+    </node>
+
+    <node name="simulation_object" pkg="autolabor_simulation_object" type="simulation_object_node" output="screen">
+	<param name="object_id" value="object_0" />
+	<param name="object_frame" value="real_map" />
+	<param name="resolution" value="0.05" />
+        <rosparam param="object_footprints">[[0.1,1.2, 0.1,-1.2, -0.1,-1.2, -0.1,1.2]]</rosparam>
+        <rosparam param="object_color">[0.0, 0.5, 0.5, 1.0]</rosparam>
+    </node>
+</launch>

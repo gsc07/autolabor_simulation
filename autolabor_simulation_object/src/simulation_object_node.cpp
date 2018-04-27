@@ -7,7 +7,7 @@ namespace autolabor_simulation {
 
 SimulationObject::SimulationObject(){
   ros::NodeHandle private_node("~");
-  if (!private_node.getParam("obstacle_id", object_id_)){
+  if (!private_node.getParam("object_id", object_id_)){
     throw runtime_error("obstacle_id is not exist");
   }
 
@@ -69,8 +69,8 @@ SimulationObject::SimulationObject(){
   marker_control_.always_visible = true;
   marker_control_.markers.push_back(marker_);
   marker_control_.interaction_mode = visualization_msgs::InteractiveMarkerControl::MOVE_ROTATE;
-  marker_control_.orientation.w = 1.0;
-  marker_control_.orientation.y = 1.0;
+  marker_control_.orientation.w = 0.7071;
+  marker_control_.orientation.y = 0.7071;
   interactive_marker_.controls.push_back(marker_control_);
 
   visualization_msgs::InteractiveMarkerControl button_control_;
