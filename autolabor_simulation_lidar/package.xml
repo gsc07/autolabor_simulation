@@ -2,7 +2,10 @@
 <package>
   <name>autolabor_simulation_lidar</name>
   <version>0.0.1</version>
-  <description>The autolabor_simulation_lidar package</description>
+  <description>
+    This package provide a single-line laser scan simulation attach to given
+    frame. It's a absolutely necessary part for a simulation with SLAM system
+  </description>
 
   <maintainer email="shichunguo@gmail.com">Colin</maintainer>
 
