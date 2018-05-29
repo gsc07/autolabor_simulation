@@ -3,10 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to autolabor_simulation's documentation!
-================================================
+======================================
+Autolabor_simulation Documentation
+======================================
 
-Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   getting_start
+   tf_coordinate_introduction
+
+
+
 
 autolabor_simulation是一款基于autolabor机器人的轻量级模拟器，它提供了一套
 开箱即用的ROS配置和友好的交互方式。能够模拟机器人底盘，单线激光雷达，自定义
@@ -14,11 +23,6 @@ autolabor_simulation是一款基于autolabor机器人的轻量级模拟器，它
 
 
 
-
-
-
-.. toctree::
-   :maxdepth: 2
 
 
 
