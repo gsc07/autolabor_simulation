@@ -62,7 +62,10 @@ double SimulationLidar::normalAngle(double theta){
 
 void SimulationLidar::getPose(tf::StampedTransform &transform, double &start_angle, double &reverse){
   double roll, pitch, yaw;
-  tf_.lookupTransform(global_frame_, lidar_frame_, ros::Time(), transform);
+  if (tf_.canTransform(global_frame_, lidar_frame_, ros::Time())){
+    tf_.lookupTransform(global_frame_, lidar_frame_, ros::Time(), transform);
+  }
+
   transform.getBasis().getRPY(roll, pitch, yaw);
   if (pow(roll,2) + pow(pitch,2) > esp){
       start_angle = yaw + max_angle_;
@@ -197,7 +200,7 @@ void SimulationLidar::mapReceived(const nav_msgs::OccupancyGrid::ConstPtr &grid_
 }
 
 void SimulationLidar::run(){
-  tf_.waitForTransform(global_frame_, lidar_frame_, ros::Time(), ros::Duration(1.0));
+  //tf_.waitForTransform(global_frame_, lidar_frame_, ros::Time(), ros::Duration(1.0));
   lidar_pub_ = nh_.advertise<sensor_msgs::LaserScan>("scan", 1);
   map_sub_ = nh_.subscribe<nav_msgs::OccupancyGrid>(stage_map_topic_, 1, &SimulationLidar::mapReceived, this);
   pub_laser_timer_ = nh_.createTimer(ros::Duration(1.0/rate_), &SimulationLidar::pubLaserCallback, this);
