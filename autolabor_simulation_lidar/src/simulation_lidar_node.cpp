@@ -200,7 +200,6 @@ void SimulationLidar::mapReceived(const nav_msgs::OccupancyGrid::ConstPtr &grid_
 }
 
 void SimulationLidar::run(){
-  //tf_.waitForTransform(global_frame_, lidar_frame_, ros::Time(), ros::Duration(1.0));
   lidar_pub_ = nh_.advertise<sensor_msgs::LaserScan>("scan", 1);
   map_sub_ = nh_.subscribe<nav_msgs::OccupancyGrid>(stage_map_topic_, 1, &SimulationLidar::mapReceived, this);
   pub_laser_timer_ = nh_.createTimer(ros::Duration(1.0/rate_), &SimulationLidar::pubLaserCallback, this);

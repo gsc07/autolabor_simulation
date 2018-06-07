@@ -149,7 +149,6 @@ void SimulationBase::pubOdomCallback(const ros::TimerEvent &event){
 }
 
 void SimulationBase::run(){
-  //tf_listener_.waitForTransform(map_frame_, base_link_frame_, ros::Time(), ros::Duration(1.0));
   cmd_sub_ = nh_.subscribe<geometry_msgs::Twist>("cmd_vel", 10, &SimulationBase::cmdReceived, this);
   odom_pub_ = nh_.advertise<nav_msgs::Odometry>("odom", 10);
   pub_odom_timer_ = nh_.createTimer(ros::Duration(1.0/rate_), &SimulationBase::pubOdomCallback, this);
