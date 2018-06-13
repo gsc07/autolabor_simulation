@@ -1,5 +1,7 @@
 #include <fcntl.h>
+#include <dirent.h>
 #include <linux/input.h>
+#include <sys/stat.h>
 
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
@@ -8,10 +10,9 @@
 
 namespace autolabor_tool {
 
-KeyboardControl::KeyboardControl():linear_state_(0), angular_state_(0){
+KeyboardControl::KeyboardControl():linear_state_(0), angular_state_(0), port_name_(""){
   ros::NodeHandle private_node("~");
 
-  private_node.param("port_name", port_name_, std::string("/dev/input/event3"));
   private_node.param("linear_min", linear_min_, 0.2);
   private_node.param("linear_max", linear_max_, 2.0);
   private_node.param("linear_step", linear_step_, 0.2);
@@ -108,13 +109,34 @@ void KeyboardControl::twistCallback(const ros::TimerEvent &){
 
 
 bool KeyboardControl::init(){
-  fd_ = open(port_name_.c_str(), O_RDONLY);
-  if (fd_ < 0){
-    ROS_ERROR_STREAM("ERROR: Can't Open The Port :" << port_name_);
+  const char path[] = "/dev/input/by-path";
+  DIR *dev_dir = opendir(path);
+  struct dirent *entry;
+  if (dev_dir == NULL){
     return false;
+  }
+
+  while ((entry = readdir(dev_dir)) != NULL){
+    std::string dir_str = entry->d_name;
+    if (dir_str.find("event-kbd") < dir_str.length()){
+      port_name_ = std::string(path) + "/" + dir_str;
+      ROS_INFO_STREAM("INFO: The keyboard port is :" << port_name_);
+      break;
+    }
+  }
+  closedir(dev_dir);
+
+  if (port_name_ != ""){
+    fd_ = open(port_name_.c_str(), O_RDONLY);
+    if (fd_ < 0){
+      ROS_ERROR_STREAM("ERROR: Can't Open The Port :" << port_name_);
+      return false;
+    }else{
+      ROS_INFO_STREAM("INFO: Open The Port :" << port_name_);
+      return true;
+    }
   }else{
-    ROS_INFO_STREAM("INFO: Open The Port :" << port_name_);
-    return true;
+    return false;
   }
 }
 
@@ -126,9 +148,7 @@ void KeyboardControl::run(){
     ros::spin();
   }
 }
-
 }
-
 
 int main(int argc, char *argv[]){
   ros::init(argc, argv, "keyboard_control_node");
@@ -136,3 +156,37 @@ int main(int argc, char *argv[]){
   keyboard_control.run();
   return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
