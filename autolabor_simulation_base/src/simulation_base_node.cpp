@@ -95,13 +95,7 @@ void SimulationBase::updateOdometry(){
 void SimulationBase::pubOdomCallback(const ros::TimerEvent &event){
   current_time_ = ros::Time::now();
   updateOdometry();
-  // get : map --> base_link
-  tf::StampedTransform map2baselink_trans;
-  if (tf_listener_.canTransform(map_frame_, base_link_frame_, ros::Time())){
-    tf_listener_.lookupTransform(map_frame_, base_link_frame_, ros::Time(), map2baselink_trans);
-  }else{
-    map2baselink_trans.setIdentity();
-  }
+
   // tf : odom --> base_link
   geometry_msgs::TransformStamped odom_trans;
   odom_trans.header.stamp = current_time_;
@@ -111,24 +105,20 @@ void SimulationBase::pubOdomCallback(const ros::TimerEvent &event){
   odom_trans.transform.translation.y = odom_y_;
   odom_trans.transform.translation.z = 0.0;
   odom_trans.transform.rotation = tf::createQuaternionMsgFromYaw(odom_th_);
-  // tf : real_map --> map
+  tf_broadcaster_.sendTransform(odom_trans);
+
   geometry_msgs::TransformStamped real_map_trans;
   real_map_trans.header.stamp = current_time_;
-  real_map_trans.header.frame_id = real_map_frame_;
-  real_map_trans.child_frame_id = map_frame_;
-
+  real_map_trans.header.frame_id = base_link_frame_;
+  real_map_trans.child_frame_id = real_map_frame_;
   tf::Transform realmap2baselink(tf::createQuaternionFromYaw(real_th_), tf::Vector3(real_x_, real_y_, 0));
-  tf::Transform realmap2map = realmap2baselink * map2baselink_trans.inverse();
-
-  real_map_trans.transform.translation.x = realmap2map.getOrigin().getX();
-  real_map_trans.transform.translation.y = realmap2map.getOrigin().getY();
+  tf::Transform baselink2realmap = realmap2baselink.inverse();
+  real_map_trans.transform.translation.x = baselink2realmap.getOrigin().getX();
+  real_map_trans.transform.translation.y = baselink2realmap.getOrigin().getY();
   real_map_trans.transform.translation.z = 0.0;
-  real_map_trans.transform.rotation = tf::createQuaternionMsgFromYaw(tf::getYaw(realmap2map.getRotation()));
+  real_map_trans.transform.rotation = tf::createQuaternionMsgFromYaw(tf::getYaw(baselink2realmap.getRotation()));
+  tf_broadcaster_.sendTransform(real_map_trans);
 
-  std::vector<geometry_msgs::TransformStamped> transformList;
-  transformList.push_back(odom_trans);
-  transformList.push_back(real_map_trans);
-  tf_broadcaster_.sendTransform(transformList);
   // publish topic
   nav_msgs::Odometry odom_msg;
   odom_msg.header.frame_id = odom_frame_;
