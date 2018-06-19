@@ -1,17 +1,19 @@
-# autolabor_simulation
+使用指导
+========
 
-Build & Installation
---------------------
+依赖
+----
 
-[Autolabor\_simulation](https://github.com/gsc07/autolabor_simulation)
-仓库由若干个 [Ros Package](http://wiki.ros.org/Packages)
-组成，仓库下的每个package 有自己的配置文件（package.xml），可以直接将
-[Autolabor\_simulation](https://github.com/gsc07/autolabor_simulation)
-克隆到你
-的workspace的src文件夹下，利用catkin\_make编译autolabor\_simulation.
+[Autolabor\_simulation](https://github.com/gsc07/autolabor_simulation) 是基于ROS开发的轮式机器人模拟器，所以在使用前需要先安装ROS环境。如果你使用的是Ubuntu 16.04操作系统，ROS环境安装方式可参考 [ROS环境安装](http://wiki.ros.org/kinetic/Installation/Ubuntu)
 
-创建你的
-[catkin\_workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
+如果你没有Ubuntu系统环境，可以在模拟器中安装 AutolaborOS，并在 AutolaborOS 中实现教程中所有功能。AutolaborOS 是基于 Ubuntu16.04 定制的机器人操作系统，其中包含ROS环境以及多种传感器驱动，同时包含模拟器以及导航建图功能模块。具体安装方式以及下载地址可以参考 [AutolaborOS安装](http://www.autolabor.com.cn/lib/video/play/4)
+
+编译安装
+--------
+
+[Autolabor\_simulation](https://github.com/gsc07/autolabor_simulation) 仓库由若干个 [Ros Package](http://wiki.ros.org/Packages) 组成，仓库下的每个package 有自己的配置文件（package.xml），可以直接将 [Autolabor\_simulation](https://github.com/gsc07/autolabor_simulation) 克隆到你 的workspace的src文件夹下，利用catkin\_make编译autolabor\_simulation.
+
+创建你的 [catkin\_workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
 
 ``` {.sourceCode .bash}
 # Create catkin_workspace
@@ -39,4 +41,55 @@ source devel/setup.bash
 ``` {.sourceCode .bash}
 # Source workspace for every terminal
 source ~/catkin_ws/devel/setup.bash
+```
+
+项目结构
+--------
+
+``` {.sourceCode .bash}
+├── autolabor_description             移动机器人urdf模型
+│   ├── CMakeLists.txt
+│   ├── launch                        启动移动机器人模型相关launch脚本
+│   ├── meshes                        移动机器人三维模型
+│   ├── package.xml
+│   ├── rviz                          移动机器人rviz可视化配置参数
+│   └── urdf                          移动机器人三维模型相关配置参数
+├── autolabor_keyboard_control        键盘控制模块
+│   ├── CMakeLists.txt
+│   ├── include                       键盘控制模块头文件
+│   ├── package.xml
+│   └── src                           键盘控制模块源代码
+├── autolabor_simulation_base         移动机器人底盘模拟(包含轮速里程计模拟)
+│   ├── CMakeLists.txt
+│   ├── include                       底盘模块头文件
+│   ├── launch                        底盘模块测试launch脚本
+│   ├── package.xml
+│   └── src                           底盘模块源代码
+├── autolabor_simulation_lidar        单线激光雷达模拟
+│   ├── CMakeLists.txt
+│   ├── include                       单线激光雷达模块头文件
+│   ├── launch                        单线激光雷达测试launch脚本
+│   ├── package.xml
+│   └── src                           单线激光雷达源代码
+├── autolabor_simulation_object       动态障碍物模拟
+│   ├── CMakeLists.txt
+│   ├── include                       动态障碍物模拟模块头文件
+│   ├── launch                        动态障碍物模拟模块launch脚本
+│   ├── package.xml
+│   └── src                           动态障碍物模拟模块源代码
+├── autolabor_simulation_stage        自定义场景模拟
+│   ├── CMakeLists.txt
+│   ├── include                       自定义场景模拟模块头文件
+│   ├── launch                        自定义场景模拟模块测试launch脚本
+│   ├── map                           场景地图
+│   ├── package.xml
+│   ├── src                           自定义场景模拟模块源代码
+│   └── srv                           自定义场景模拟模块ROS中使用的自定义消息
+├── doc                               说明文档
+│   ├── make.bat
+│   ├── Makefile
+│   └── source
+├── README.md
+└── script                            模拟器相关脚本
+    └── add_keyboard_udev             添加键盘映射脚本
 ```
