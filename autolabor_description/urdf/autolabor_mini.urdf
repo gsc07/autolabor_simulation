@@ -15,4 +15,11 @@
       </material>
     </visual>
   </link>
+  <link name="lidar"> </link>
+
+  <joint name="joint0" type="fixed" >
+    <parent link="base_link" />
+    <child link="lidar" />
+    <origin xyz="0. 0. 0.15" />
+  </joint>
 </robot>
