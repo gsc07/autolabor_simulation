@@ -1,2 +1,3 @@
 *.ycm_extra_conf.py
 doc/build/*
+simulation_launch_local/*

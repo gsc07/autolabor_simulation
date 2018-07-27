@@ -13,11 +13,12 @@ Autolabor_simulation Documentation
 
    getting_start
    tf_coordinate_introduction
+   autolabor_simulation_base
 
 
-autolabor_simulation是一款基于autolabor机器人的轻量级模拟器，它提供了一套
+autolabor_simulation是一款基于autolabor机器人的轻量级模拟器，它完整的提供了一套
 开箱即用的ROS配置和友好的交互方式。能够模拟机器人底盘，单线激光雷达，自定义
-障碍。并且可以自由配置各个传感器的干扰数据。
+障碍等等数据，并且可以自由配置各个传感器的干扰数据。
 
 
 
