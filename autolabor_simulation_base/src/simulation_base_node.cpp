@@ -27,6 +27,8 @@ SimulationBase::SimulationBase():cur_v_linear_(0.0),cur_v_theta_(0.0),tar_v_line
 
   private_node.param("rate", rate_, 30);
 
+  private_node.param("is_tf_broadcast", is_tf_broadcast_, true);
+
   last_time_ = ros::Time::now();
 }
 
@@ -105,7 +107,9 @@ void SimulationBase::pubOdomCallback(const ros::TimerEvent &event){
   odom_trans.transform.translation.y = odom_y_;
   odom_trans.transform.translation.z = 0.0;
   odom_trans.transform.rotation = tf::createQuaternionMsgFromYaw(odom_th_);
-  tf_broadcaster_.sendTransform(odom_trans);
+  if (is_tf_broadcast_) {
+    tf_broadcaster_.sendTransform(odom_trans);
+  }
 
   geometry_msgs::TransformStamped real_map_trans;
   real_map_trans.header.stamp = current_time_;
