@@ -114,7 +114,7 @@ dwa: true
 publish_cost_grid_pc: false
 
 # The frame to set for the cost_cloud. Should be set to the same frame as the local costmap's global frame. New in navigation 1.4.0 (string, default: odom)
-global_frame_id: odom
+global_frame_id: map
 
 ##################################
 #

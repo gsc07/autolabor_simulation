@@ -110,6 +110,14 @@
     <param name="tf_map_scanmatch_transform_frame_name" value="$(arg tf_map_scanmatch_transform_frame_name)" />
   </node>
 
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find simulation_launch)/param/move_base_params.yaml" command="load" />
+    <rosparam file="$(find simulation_launch)/param/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find simulation_launch)/param/local_costmap_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find simulation_launch)/param/global_planner_params.yaml" command="load" ns="GlobalPlanner"/>
+    <rosparam file="$(find simulation_launch)/param/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS"/>
+  </node>
+
   <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0 0 0 0 0 0 /base_link /laser 100"/>
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find simulation_launch)/rviz/hector_navigation.rviz" />
