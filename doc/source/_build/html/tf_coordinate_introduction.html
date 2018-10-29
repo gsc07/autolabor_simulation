@@ -1,0 +1,369 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>坐标轴与坐标系 &mdash; autolabor_simulation 0.1 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Autolabor Simulation Base 模块介绍" href="autolabor_simulation_base.html" />
+    <link rel="prev" title="开始" href="getting_start.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> autolabor_simulation
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_start.html">Autolabor Simulation 使用入门</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Autolabor Simulation 预备知识——坐标轴与坐标系</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">坐标轴的定义</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">三维坐标轴朝向定义</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">三维坐标轴旋转定义</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">坐标系定义</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ros">ROS中常见的坐标系</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">模拟器使用的坐标系</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">为什么引入真实坐标系</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autolabor_simulation_base.html">Autolabor Simulation Base 模块介绍</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">autolabor_simulation</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>坐标轴与坐标系</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tf_coordinate_introduction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>坐标轴与坐标系<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>对于大多数用户来说坐标转换是一个“黑箱”，不了解这个部分并不影响用户愉快的使用模拟器，但理解ROS以及Autolabor Simulation的坐标转换机制能帮助用户更好的控制他们的机器人，也使他们能够更快的查找出编码中可能出现的问题。</p>
+<p>在ROS中，坐标轴规定可以参考 <a class="reference external" href="http://www.ros.org/reps/rep-0103.html">ROS-REP 103</a> ，坐标系可以参考 <a class="reference external" href="http://www.ros.org/reps/rep-0105.html">ROS-REP 105</a> ，为了方便大家的理解，这里结合模拟器做简单的讲解</p>
+<div class="section" id="id2">
+<h2>坐标轴的定义<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id3">
+<h3>三维坐标轴朝向定义<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>常规用来表示三维位置关系时，使用的是右手坐标系，何为右手坐标系呢？我们来看下图：</p>
+<div class="figure align-center" id="id10">
+<a class="reference internal image-reference" href="_images/right_hand_axes.jpg"><img alt="_images/right_hand_axes.jpg" src="_images/right_hand_axes.jpg" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-text">右手坐标系展示</span></p>
+</div>
+<div class="admonition-f1 admonition">
+<p class="first admonition-title">右手坐标系定义<a class="footnote-reference" href="#f1" id="id4">[1]</a></p>
+<p class="last">把右手放在原点的位置，使大姆指，食指和中指互成直角，把 <strong>大姆指</strong> 指向 <strong>Z轴</strong> 的正方向，<strong>食指</strong> 指向 <strong>X轴</strong> 的正方向时向时，<strong>中指</strong> 所指的方向就是 <strong>Y轴</strong> 的正方向</p>
+</div>
+<p>通常相对于我们的身体而言</p>
+<ul class="simple">
+<li>X -&gt; 朝前</li>
+<li>Y -&gt; 朝左</li>
+<li>Z -&gt; 朝上</li>
+</ul>
+<dl class="docutils">
+<dt>举例:</dt>
+<dd>坐标点 <strong>(3,4,5)</strong> 表示距原点 <strong>前3个单位</strong> ，并向 <strong>左4个单位</strong> 以及向 <strong>上5个单位</strong> 的位置。</dd>
+</dl>
+</div>
+<div class="section" id="id5">
+<h3>三维坐标轴旋转定义<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>有了三维坐标轴的定义，那么对于旋转的定义也就比较容易了，对于一个三维空间里面的旋转，可以分解成绕着坐标轴的旋转。旋转的方向使用右手法则定义：</p>
+<div class="figure align-center" id="id11">
+<a class="reference internal image-reference" href="_images/right_hand_rule.jpg"><img alt="_images/right_hand_rule.jpg" src="_images/right_hand_rule.jpg" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-text">右手法则旋转定义</span></p>
+</div>
+<div class="admonition- admonition">
+<p class="first admonition-title">绕坐标轴旋转定义</p>
+<p class="last">用右手握住坐标轴，<strong>大拇指</strong> 的方向朝着坐标轴 <strong>朝向的正方向</strong>，<strong>四指环绕的方向</strong> 定义沿着这个坐标轴 <strong>旋转的正方向</strong></p>
+</div>
+<p>一般来说</p>
+<ul class="simple">
+<li>绕 <strong>Z轴</strong> 旋转，称之为 <strong>航向角</strong>，使用yaw表示;</li>
+<li>绕 <strong>X轴</strong> 旋转，称之为 <strong>横滚角</strong>，使用roll表示;</li>
+<li>绕 <strong>Y轴</strong> 旋转，称之为 <strong>俯仰角</strong>，使用pitch表示;</li>
+</ul>
+<dl class="docutils">
+<dt>举例:</dt>
+<dd>我们通常用来表述小车运动的二维平面指的是 <strong>X-Y平面</strong> ，也就是X轴和Y轴张成的平面，在这个平面中，用来描述 <strong>小车转弯的角</strong> 就是绕Z轴的旋转，也就是经常说的 <strong>航向角</strong> 。Z轴朝上，所以按照右手法则可以知道小车向 <strong>左转为正，右转为负</strong>。</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>坐标系定义<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>空间中的同一位置，在不同坐标系下，其坐标值也不相同。</p>
+<div class="figure align-center" id="id12">
+<a class="reference internal image-reference" href="_images/tf_1.jpg"><img alt="_images/tf_1.jpg" src="_images/tf_1.jpg" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">不同坐标系下的表现</span></p>
+</div>
+<p>在上图中，有两个坐标系，分别为坐标系A和坐标系B，其中 <strong>橘红色坐标轴</strong> 表示 <strong>X轴</strong> (朝前)，<strong>蓝色坐标轴</strong> 表示 <strong>Y轴</strong> (朝左)。对于 <strong>坐标系A</strong> 中，粉色的圆点的坐标为 <strong>(3, -3)</strong> ，对于 <strong>坐标系B</strong> 中，粉色的圆点的坐标为 <strong>(5, 1)</strong></p>
+<div class="section" id="ros">
+<h3>ROS中常见的坐标系<a class="headerlink" href="#ros" title="永久链接至标题">¶</a></h3>
+<p>在ROS中，定义了许多坐标系，这里介绍几个常见的坐标系，为了比较直观的解释这几个坐标系，我们使用一个小例子来说明。</p>
+<div class="figure align-center" id="id13">
+<a class="reference internal image-reference" href="_images/tf_2.jpg"><img alt="_images/tf_2.jpg" src="_images/tf_2.jpg" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">1-1</span></p>
+</div>
+<p>在刚开始的时候，按照之前坐标轴的定义，将小车的朝向方向作为X轴，正左方标识为Y轴，并将小车所在的位置定义为原点，如图(1-1)。</p>
+<div class="figure align-center" id="id14">
+<a class="reference internal image-reference" href="_images/tf_3.jpg"><img alt="_images/tf_3.jpg" src="_images/tf_3.jpg" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">1-2</span></p>
+</div>
+<p>如图(1-2)，在原点插一面小旗子，并控制小车行驶一段距离，这个时候我们能得到三个位置信息</p>
+<ul class="simple">
+<li>使用测量工具测量小车相对旗子的位置，在X轴正方向距原点3个单位，在Y轴正方向距原点2个单位</li>
+<li>小车安装里程计，记录自己前进3个单位，并向左平移了2个单位</li>
+<li>小车使用激光雷达数据与已有地图进行匹配，并结合里程计数据，将数据融合得到小车的位置在X轴正方向3个单位，在Y轴正方向2个单位</li>
+</ul>
+<p>在上面的例子中，三个坐标值都相同。但真实情况下，三个坐标值由于测量误差或者其他原因导致坐标值并不相同，然而这三个坐标都用来表示小车中心在空间中的位置，这就引出了不同坐标系</p>
+<ul class="simple">
+<li>对于第一种测量，称之为 <strong>真实坐标系</strong>，这是一个理想的坐标系，即我们拥有一种绝对准确的测量方式获得小车相对于地图原点的坐标，但这种坐标系在真实情况下是不存在的。</li>
+<li>对于第二种测量，称之为 <strong>里程计坐标系</strong>，在这个坐标系中得到的测量值通常是基于轮速里程计，视觉里程计或者惯性单元得到的。在这个坐标系中，新坐标值通常是根据前一个时刻坐标得到的，一般使用odom来表示。<ul>
+<li><strong>优点</strong>: 坐标值是连续的并且以平稳的方式演变，没有离散的跳跃。</li>
+<li><strong>缺点</strong>: 测量产生的误差会累计。</li>
+<li><strong>适合</strong>: 短时程相对定位</li>
+</ul>
+</li>
+<li>对于第三种测量，称之为 <strong>地图坐标系</strong>，在这个坐标系中得到坐标值通常是通过传感器的数据重新计算或测量得到的，一般使用map来表示。<ul>
+<li><strong>优点</strong>: 由于每次得到的坐标点都是重新测量计算得到的，累计误差影响较小</li>
+<li><strong>缺点</strong>: 坐标数据会有跳变。</li>
+<li><strong>适合</strong>: 长时程绝对定位</li>
+</ul>
+</li>
+</ul>
+<p>假设对于上面描述的三种测量是以下结果</p>
+<ul class="simple">
+<li>真实坐标系：坐标值为(3, 2)</li>
+<li>里程计坐标系：坐标值(3, 1)</li>
+<li>地图坐标系：坐标值(3.5, 2.5)</li>
+</ul>
+<div class="figure align-center" id="id15">
+<a class="reference internal image-reference" href="_images/tf_4.jpg"><img alt="_images/tf_4.jpg" src="_images/tf_4.jpg" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">1-3</span></p>
+</div>
+<p>那么坐标系表示如图(1-3)</p>
+</div>
+<div class="section" id="id7">
+<h3>模拟器使用的坐标系<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>模拟器除了沿袭上面讲述的两个坐标系(odom, map)之外，同时还引入了真实坐标系(real_map)。</p>
+<p>由于是模拟器，所以可以精确的知道小车的真实位置，在autolabor_simulation_base模块中，会发布两种坐标系的坐标</p>
+<ul class="simple">
+<li>小车在 <strong>odom坐标系</strong> 下的坐标：发布的坐标是模拟轮速里程计产生的，我们可以在autolabor_simulation_base模块中设置轮速里程计噪音，用于模拟真实情况。但由于存在噪音，所以在odom坐标系下的小车坐标并不等于其真实位置。</li>
+<li>小车在 <strong>real_map坐标系</strong> 下的坐标：发布的坐标是根据上层控制速度结合小车底层限制(小车的最大速度，加速度等信息)产生的，在这个坐标系下会排除轮速里程计产生的噪声，输出小车的真实坐标。</li>
+</ul>
+<p>对于map坐标系下的坐标，并不由模拟器产生，而是通过上层的定位算法得到的，这部分在后面的讲解中可以看到。</p>
+</div>
+<div class="section" id="id8">
+<h3>为什么引入真实坐标系<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>我们往往希望找到一种量化的方法去评价算法的优劣，这样对于调整算法或者某些参数有很大的帮助。在使用真实机器人去测试，需要借助外界测量工具去测量，并且需要想一些巧妙的办法让这些测量合理并且准确。但使用模拟器就能够比较方便的解决这个问题。</p>
+<p>模拟器能对传感器数据添加噪声，从而来模拟真实情况。将有噪音的数据带入算法中，如果得到的数据很接近“真实数据”，那么我们就能认为这个算法比较好。</p>
+<p>比如我们使用AMCL算法对小车进行定位，其中里程计和激光雷达数据都带有噪音，这个时候我们可以得到在map坐标系下的坐标，同时我们能得到小车在real_map坐标系下的坐标，我们就可以使用这两个坐标的距离来判断定位的准确性。</p>
+<p>在后面的实验中，我们可以使用这个特性对一些算法进行评测。</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[1]</a></td><td>在百度百科 <a class="reference external" href="https://baike.baidu.com/item/%E5%8F%B3%E6%89%8B%E5%9D%90%E6%A0%87%E7%B3%BB/2562697?fr=aladdin">右手表坐标系</a> 条目中对坐标轴的定义略有差别</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="autolabor_simulation_base.html" class="btn btn-neutral float-right" title="Autolabor Simulation Base 模块介绍" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_start.html" class="btn btn-neutral" title="开始" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colin Jackey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -11,7 +11,6 @@ namespace autolabor_simulation {
 SimulationBase::SimulationBase():cur_v_linear_(0.0),cur_v_theta_(0.0),tar_v_linear_(0.0),tar_v_theta_(0.0),
   real_x_(0.0),real_y_(0.0),real_th_(0.0),odom_x_(0.0),odom_y_(0.0),odom_th_(0.0){
   ros::NodeHandle private_node("~");
-  private_node.param("map_frame", map_frame_, std::string("map"));
   private_node.param("odom_frame", odom_frame_, std::string("odom"));
   private_node.param("base_link_frame", base_link_frame_, std::string("base_link"));
   private_node.param("real_map_frame", real_map_frame_, std::string("real_map"));

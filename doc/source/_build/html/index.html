@@ -1,0 +1,278 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Autolabor_simulation Documentation &mdash; autolabor_simulation 0.1 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="开始" href="getting_start.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> autolabor_simulation
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_start.html">Autolabor Simulation 使用入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tf_coordinate_introduction.html">Autolabor Simulation 预备知识——坐标轴与坐标系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autolabor_simulation_base.html">Autolabor Simulation Base 模块介绍</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">autolabor_simulation</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Autolabor_simulation Documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="autolabor-simulation-documentation">
+<h1>Autolabor_simulation Documentation<a class="headerlink" href="#autolabor-simulation-documentation" title="永久链接至标题">¶</a></h1>
+<div class="section" id="autolabor-simulation">
+<h2>Autolabor Simulation 是什么<a class="headerlink" href="#autolabor-simulation" title="永久链接至标题">¶</a></h2>
+<p>Autolabor Simulation是一款基于ROS（Robot Operating System）的轻量级开源轮式机器人模拟器。其能实现轮速里程计，激光雷达，机器人底盘模拟，并可自定义二维场景以及动态障碍物。并提供丰富参数配置以及接口对相应传感器以及场景的操控。</p>
+<p>Autolabor Simulation使用ROS开发，不依赖与其他软件工具，适用于初学者学习ROS以及开发者调试导航，建图等算法。其最大的特点就是简单易上手，仅通过配置相应ROS节点即可模拟获取多种传感器数据，替换相应设备驱动即可快速移植到真实移动机器人上。</p>
+</div>
+<div class="section" id="id1">
+<h2>Autolabor Simulation 包含哪些模块<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li>autolabor_description       —— 机器人urdf模型</li>
+<li>autolabor_simulation_base   —— 轮式机器人底盘模拟</li>
+<li>autolabor_simulation_lidar  —— 单线激光雷达模拟</li>
+<li>autolabor_simulation_stage  —— 基于灰度图片的自定义场景模拟</li>
+<li>autolabor_simulation_object —— 自定义形状的可移动障碍我模拟</li>
+<li>autolabor_keyboard_control  —— 键盘控制模块</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>Autolabor Simulation 能实现哪些功能<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>Autolabor Simulation 在设计时采用低耦合设计观念构建所有模块，有非常良好的可扩展性，后期根据需求会逐渐添加更多传感器（惯导，超声波传感器，毫米波）模拟。现有的功能可实现但不限于以下功能：</p>
+<ul class="simple">
+<li>键盘控制小车运动功能</li>
+<li>Cartographer2D 单线激光雷达SLAM建图</li>
+<li>Gmapping 单线激光雷达SLAM建图</li>
+<li>Amcl 基于单线激光雷达定位</li>
+<li>Navigation 自动导航功能</li>
+</ul>
+<p>模拟器提供动态障碍物模拟，对于有一定开发经验的用户可以提供利用其进行激光雷达进行深度强化学习，训练局部规划算法。</p>
+</div>
+<div class="section" id="id3">
+<h2>教程目录<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_start.html">Autolabor Simulation 使用入门</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_start.html#id2">依赖</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_start.html#id3">编译安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_start.html#id5">项目结构</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tf_coordinate_introduction.html">Autolabor Simulation 预备知识——坐标轴与坐标系</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tf_coordinate_introduction.html#id2">坐标轴的定义</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tf_coordinate_introduction.html#id6">坐标系定义</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autolabor_simulation_base.html">Autolabor Simulation Base 模块介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autolabor_simulation_base.html#id1">功能介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autolabor_simulation_base.html#id3">节点信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autolabor_simulation_base.html#id7">使用示例</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getting_start.html" class="btn btn-neutral float-right" title="开始" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colin Jackey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

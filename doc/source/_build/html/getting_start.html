@@ -1,0 +1,319 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>开始 &mdash; autolabor_simulation 0.1 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="坐标轴与坐标系" href="tf_coordinate_introduction.html" />
+    <link rel="prev" title="Autolabor_simulation Documentation" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> autolabor_simulation
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Autolabor Simulation 使用入门</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">依赖</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">编译安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">项目结构</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tf_coordinate_introduction.html">Autolabor Simulation 预备知识——坐标轴与坐标系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autolabor_simulation_base.html">Autolabor Simulation Base 模块介绍</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">autolabor_simulation</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>开始</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/getting_start.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>开始<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>依赖<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p><a class="reference external" href="https://github.com/gsc07/autolabor_simulation">Autolabor_simulation</a> 是基于ROS开发的轮式机器人模拟器，所以在使用前需要先安装ROS环境。如果你使用的是Ubuntu 16.04操作系统，ROS环境安装方式可参考 <a class="reference external" href="http://wiki.ros.org/kinetic/Installation/Ubuntu">ROS环境安装</a></p>
+<p>如果你没有Ubuntu系统环境，可以在模拟器中安装 AutolaborOS，并在 AutolaborOS 中实现教程中所有功能。AutolaborOS 是基于 Ubuntu16.04 定制的机器人操作系统，其中包含ROS环境以及多种传感器驱动，同时包含模拟器以及导航建图功能模块。具体安装方式以及下载地址可以参考 <a class="reference external" href="http://www.autolabor.com.cn/lib/video/play/4">AutolaborOS安装</a></p>
+</div>
+<div class="section" id="id3">
+<h2>编译安装<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p><a class="reference external" href="https://github.com/gsc07/autolabor_simulation">Autolabor_simulation</a> 仓库由若干个 <a class="reference external" href="http://wiki.ros.org/Packages">Ros Package</a> 组成，仓库下的每个package
+有自己的配置文件（package.xml），可以直接将 <a class="reference external" href="https://github.com/gsc07/autolabor_simulation">Autolabor_simulation</a> 克隆到你
+的workspace的src文件夹下，利用catkin_make编译autolabor_simulation.</p>
+<p>创建你的 <a class="reference external" href="http://wiki.ros.org/catkin/Tutorials/create_a_workspace">catkin_workspace</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create catkin_workspace</span>
+<span class="nb">source</span> /opt/ros/kinetic/setup.bash
+mkdir -p ~/catkin_ws/src
+<span class="nb">cd</span> ~/catkin_ws/
+catkin_make
+</pre></div>
+</div>
+<p>下载并编译</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone Autolabor_simulation to your workspace</span>
+<span class="nb">cd</span> ~/catkin_ws/src/
+git clone https://github.com/gsc07/autolabor_simulation.git
+
+<span class="c1"># Build source</span>
+<span class="nb">cd</span> ..
+catkin_make
+<span class="nb">source</span> devel/setup.bash
+</pre></div>
+</div>
+<p>如果希望ROS环境中默认包含autolabor_simulation，可以使用如下命令将workspace设为默认包含</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source workspace for every terminal</span>
+<span class="nb">source</span> ~/catkin_ws/devel/setup.bash
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>项目结构<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├── autolabor_description             移动机器人urdf模型
+│   ├── CMakeLists.txt
+│   ├── launch                        启动移动机器人模型相关launch脚本
+│   ├── meshes                        移动机器人三维模型
+│   ├── package.xml
+│   ├── rviz                          移动机器人rviz可视化配置参数
+│   └── urdf                          移动机器人三维模型相关配置参数
+├── autolabor_keyboard_control        键盘控制模块
+│   ├── CMakeLists.txt
+│   ├── include                       键盘控制模块头文件
+│   ├── package.xml
+│   └── src                           键盘控制模块源代码
+├── autolabor_simulation_base         移动机器人底盘模拟<span class="o">(</span>包含轮速里程计模拟<span class="o">)</span>
+│   ├── CMakeLists.txt
+│   ├── include                       底盘模块头文件
+│   ├── launch                        底盘模块测试launch脚本
+│   ├── package.xml
+│   └── src                           底盘模块源代码
+├── autolabor_simulation_lidar        单线激光雷达模拟
+│   ├── CMakeLists.txt
+│   ├── include                       单线激光雷达模块头文件
+│   ├── launch                        单线激光雷达测试launch脚本
+│   ├── package.xml
+│   └── src                           单线激光雷达源代码
+├── autolabor_simulation_object       动态障碍物模拟
+│   ├── CMakeLists.txt
+│   ├── include                       动态障碍物模拟模块头文件
+│   ├── launch                        动态障碍物模拟模块launch脚本
+│   ├── package.xml
+│   └── src                           动态障碍物模拟模块源代码
+├── autolabor_simulation_stage        自定义场景模拟
+│   ├── CMakeLists.txt
+│   ├── include                       自定义场景模拟模块头文件
+│   ├── launch                        自定义场景模拟模块测试launch脚本
+│   ├── map                           场景地图
+│   ├── package.xml
+│   ├── src                           自定义场景模拟模块源代码
+│   └── srv                           自定义场景模拟模块ROS中使用的自定义消息
+├── doc                               说明文档
+│   ├── make.bat
+│   ├── Makefile
+│   └── <span class="nb">source</span>
+├── README.md
+└── script                            模拟器相关脚本
+    └── add_keyboard_udev             添加键盘映射脚本
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tf_coordinate_introduction.html" class="btn btn-neutral float-right" title="坐标轴与坐标系" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Autolabor_simulation Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colin Jackey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

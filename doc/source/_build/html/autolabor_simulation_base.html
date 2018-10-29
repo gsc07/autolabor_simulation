@@ -1,0 +1,605 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Autolabor Simulation Base 模块介绍 &mdash; autolabor_simulation 0.1 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="prev" title="坐标轴与坐标系" href="tf_coordinate_introduction.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> autolabor_simulation
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_start.html">Autolabor Simulation 使用入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tf_coordinate_introduction.html">Autolabor Simulation 预备知识——坐标轴与坐标系</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Autolabor Simulation Base 模块介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">功能介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">节点信息</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">订阅话题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">发布话题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">节点参数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">使用示例</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">autolabor_simulation</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Autolabor Simulation Base 模块介绍</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/autolabor_simulation_base.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="autolabor-simulation-base">
+<h1>Autolabor Simulation Base 模块介绍<a class="headerlink" href="#autolabor-simulation-base" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>功能介绍<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>Autolabor Simulation Base 主要用于模拟差速转向的移动机器人底盘，其运作模式为订阅 <a class="reference external" href="http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html">ROS速度信息</a> ，根据底盘自身参数限制(这里主要限制因素有最大速度与最大加速度)，以及设置的噪音参数模拟小车运行速度。并根据速度控制小车在X-Y平面中行驶。</p>
+<p>小车在运行过程中会发布 <a class="reference external" href="http://docs.ros.org/api/nav_msgs/html/msg/Odometry.html">ROS里程计信息</a> 此处里程计数据中包含噪声，用于模拟真实情况下的里程计数据。</p>
+<p>同时该模块会发布两个坐标转换信息</p>
+<ul class="simple">
+<li>里程计坐标系 ——&gt; 小车底盘坐标系 的坐标转换</li>
+<li>小车底盘坐标系 ——&gt; 真实坐标系 的坐标转换</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">注解</p>
+<p class="last">在ROS中坐标转换树中，一个子节点最多只能有一个父节点。作为子节点 <strong>小车底盘坐标系</strong> 不能同时拥有两个坐标系(<strong>里程计坐标系</strong>，<strong>真实坐标系</strong>)，所以在坐标转换树中将 <strong>真实坐标系</strong> 作为 <strong>小车底盘坐标系</strong> 的子节点。</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>节点信息<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h3>订阅话题<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">话题名称:</th><td class="field-body">/cmd_vel</td>
+</tr>
+<tr class="field-even field"><th class="field-name">消息类型:</th><td class="field-body"><a class="reference external" href="http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html">geometry_msgs/Twist</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">话题说明:</th><td class="field-body">用于控制机器人地盘运动的速度指令</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-geometry-msgs-twist admonition">
+<p class="first admonition-title">geometry_msgs/Twist 数据类型说明</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>geometry_msgs/Vector3 linear    线速度 单位为 m/s
+  float64 x                     前后移动的速度，+表示向前，-表示向后
+  float64 y                     左右移动的速度，+表示向左，-表示向右
+  float64 z                     上下移动的速度，+表示向上，-表示向下
+geometry_msgs/Vector3 angular   角速度 单位为 rad/s
+  float64 x                     横滚角速度，正负号依据右手法则决定
+  float64 y                     俯仰角速度，正负号依据右手法则决定
+  float64 z                     航向角速度，俯视小车时，+表示逆时针旋转，-表示顺时针旋转
+</pre></div>
+</div>
+<div class="last line-block">
+<div class="line">小车使用差速转向，仅能前后运动，所以在 <strong>线速度</strong> 中只有 <strong>X分量</strong> 有数据，其余分量为0</div>
+<div class="line">小车在水平面行驶，仅能水平转动，所以在 <strong>角速度</strong> 中只有 <strong>Z分量</strong> 有数据，其余分量为0</div>
+</div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>发布话题<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">话题名称:</th><td class="field-body">/odom</td>
+</tr>
+<tr class="field-even field"><th class="field-name">消息类型:</th><td class="field-body">nav_msgs/Odometry &lt;<a class="reference external" href="http://docs.ros.org/api/nav_msgs/html/msg/Odometry.html">http://docs.ros.org/api/nav_msgs/html/msg/Odometry.html</a>&gt;`_</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">话题说明:</th><td class="field-body">发布机器人的轮速里程计信息(此处数据带有噪音)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-nav-msgs-odometry admonition">
+<p class="first admonition-title">nav_msgs/Odometry 数据类型说明</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">std_msgs</span><span class="o">/</span><span class="n">Header</span> <span class="n">header</span>                     <span class="n">数据头信息</span>
+  <span class="n">uint32</span> <span class="n">seq</span>                               <span class="n">数据序列号</span>
+  <span class="n">time</span> <span class="n">stamp</span>                               <span class="n">数据时间戳信息</span>
+  <span class="n">string</span> <span class="n">frame_id</span>                          <span class="n">姿态数据</span><span class="p">(</span><span class="n">pose</span><span class="p">)</span><span class="n">所处的坐标系</span>
+<span class="n">string</span> <span class="n">child_frame_id</span>                      <span class="n">速度数据</span><span class="p">(</span><span class="n">twist</span><span class="p">)</span><span class="n">所在的坐标系</span>
+<span class="n">geometry_msgs</span><span class="o">/</span><span class="n">PoseWithCovariance</span> <span class="n">pose</span>
+  <span class="n">geometry_msgs</span><span class="o">/</span><span class="n">Pose</span> <span class="n">pose</span>                  <span class="n">里程计姿态数据信息</span>
+    <span class="n">geometry_msgs</span><span class="o">/</span><span class="n">Point</span> <span class="n">position</span>           <span class="n">里程计姿态数据的位置信息</span>
+      <span class="n">float64</span> <span class="n">x</span>
+      <span class="n">float64</span> <span class="n">y</span>
+      <span class="n">float64</span> <span class="n">z</span>
+    <span class="n">geometry_msgs</span><span class="o">/</span><span class="n">Quaternion</span> <span class="n">orientation</span>   <span class="n">里程计姿态数据的方向信息</span><span class="p">(</span><span class="n">四元数</span><span class="p">)</span>
+      <span class="n">float64</span> <span class="n">x</span>
+      <span class="n">float64</span> <span class="n">y</span>
+      <span class="n">float64</span> <span class="n">z</span>
+      <span class="n">float64</span> <span class="n">w</span>
+  <span class="n">float64</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span> <span class="n">covariance</span>                   <span class="n">姿态数据的协方差矩阵</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">roll</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">yaw</span><span class="p">)</span>
+<span class="n">geometry_msgs</span><span class="o">/</span><span class="n">TwistWithCovariance</span> <span class="n">twist</span>    <span class="n">里程计速度数据信息</span>
+  <span class="n">geometry_msgs</span><span class="o">/</span><span class="n">Twist</span> <span class="n">twist</span>
+    <span class="n">geometry_msgs</span><span class="o">/</span><span class="n">Vector3</span> <span class="n">linear</span>           <span class="n">线速度信息</span>
+      <span class="n">float64</span> <span class="n">x</span>
+      <span class="n">float64</span> <span class="n">y</span>
+      <span class="n">float64</span> <span class="n">z</span>
+    <span class="n">geometry_msgs</span><span class="o">/</span><span class="n">Vector3</span> <span class="n">angular</span>          <span class="n">角速度信息</span>
+      <span class="n">float64</span> <span class="n">x</span>
+      <span class="n">float64</span> <span class="n">y</span>
+      <span class="n">float64</span> <span class="n">z</span>
+  <span class="n">float64</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span> <span class="n">covariance</span>                   <span class="n">速度信息的协方差矩阵</span><span class="p">(</span><span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">vz</span><span class="p">,</span> <span class="n">v_roll</span><span class="p">,</span> <span class="n">v_pitch</span><span class="p">,</span> <span class="n">v_yaw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>节点参数<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~odom_frame</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">odom</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数说明:</th><td class="field-body">里程计坐标系的名称</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~base_link_frame</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">base_link</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数说明:</th><td class="field-body">小车坐标系的名称</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~real_map_frame</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">real_map</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数说明:</th><td class="field-body">真实坐标系的名称</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~noise_v_linear</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">double</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">0.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数限制:</th><td class="field-body">必须大于等于0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">参数说明:</th><td class="field-body">模拟行驶过程中在线速度中添加白噪音的标准差，单位为m/s，默认为不添加噪音</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~noise_v_theta</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">double</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">0.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数限制:</th><td class="field-body">必须大于等于0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">参数说明:</th><td class="field-body">模拟行驶过程中在角速度中添加白噪音的标准差，单位为rad/s，默认为不添加噪音</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~max_a_linear</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">double</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">999.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数限制:</th><td class="field-body">必须大于0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">参数说明:</th><td class="field-body">小车底盘行驶最大线加速度，单位为 m/s^2, 默认是一个比较大的值，在正常模拟情况下。小车能直接达到所给的速度</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~max_a_theta</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">double</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">999.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数限制:</th><td class="field-body">必须大于0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">参数说明:</th><td class="field-body">小车底盘行驶最大角加速度，单位为 rad/s^2, 默认是一个比较大的值，在正常模拟情况下。小车能直接达到所给的速度</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~max_v_linear</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">double</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">1.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数限制:</th><td class="field-body">必须大于0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">参数说明:</th><td class="field-body">小车底盘行驶线速度绝对值的最大值，单位为 m/s，比如在默认情况下，小车行驶速度为 <span class="math notranslate nohighlight">\(-1.0 m/s \leq v \leq 1.0 m/s\)</span>, 当控制速度超出这个范围，小车按照离控制速度最近的极值运行</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~max_v_theta</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">double</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">1.57</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数限制:</th><td class="field-body">必须大于0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">参数说明:</th><td class="field-body">小车底盘行驶角速度绝对值的最大值，单位为 rad/s，说明与 max_v_linear 类似</td>
+</tr>
+</tbody>
+</table>
+<HR><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数名称:</th><td class="field-body">~rate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数类型:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">默认数据:</th><td class="field-body">30</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参数限制:</th><td class="field-body">必须大于0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">参数说明:</th><td class="field-body">小车模拟行驶更新位置的频率，也是里程计信息发布的频率，这个值越大，小车模拟行驶越平滑，同时需要计算量也就越大</td>
+</tr>
+</tbody>
+</table>
+<HR></div>
+</div>
+<div class="section" id="id7">
+<h2>使用示例<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>以下的实验步骤必须在安装好ROS环境以及编译Autolabor Simulation功能包的基础下进行，如果您还未执行上述操作，请先参考前面的使用文档。假设ROS工作目录为 ~/catkin_ws，并且Autolabor Simulation的源码放在 ~/catkin_ws/src 中，如果你的环境和上述不一致，需要在下面的脚本中做相应的替换。</p>
+<p>进入ROS工作目录</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/catkin_ws
+</pre></div>
+</div>
+<p>编译模拟器(如果您已经编译过，可忽略此步)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>catkin_make
+</pre></div>
+</div>
+<p>添加模拟器相关环境变量</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> devel/setup.bash
+</pre></div>
+</div>
+<p>进入autolabor_simulation_base包的launch文件夹</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roscd autolabor_simulation_base/launch
+</pre></div>
+</div>
+<p>创建ROS脚本文件</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;&lt;!-- autolabor_simulation_base demo --&gt;</span>
+<span class="s1">&lt;launch&gt;</span>
+<span class="s1">    &lt;arg name=&quot;model&quot; /&gt;</span>
+<span class="s1">    &lt;arg name=&quot;gui&quot; default=&quot;false&quot; /&gt;</span>
+
+<span class="s1">    &lt;param name=&quot;use_sim_time&quot; value=&quot;false&quot;/&gt;</span>
+<span class="s1">    &lt;param name=&quot;robot_description&quot; textfile=&quot;$(find autolabor_description)/urdf/autolabor_pro1.urdf&quot; /&gt;</span>
+<span class="s1">    &lt;param name=&quot;use_gui&quot; value=&quot;$(arg gui)&quot; /&gt;</span>
+
+<span class="s1">    &lt;node pkg=&quot;autolabor_simulation_base&quot; type=&quot;simulation_base_node&quot; name=&quot;autolabor_driver&quot; output=&quot;screen&quot;&gt;</span>
+<span class="s1">        &lt;param name=&quot;odom_frame&quot; value=&quot;odom&quot;/&gt;</span>
+<span class="s1">        &lt;param name=&quot;base_link_frame&quot; value=&quot;base_link&quot;/&gt;</span>
+<span class="s1">        &lt;param name=&quot;real_map_frame&quot; value=&quot;real_map&quot;/&gt;</span>
+
+<span class="s1">        &lt;param name=&quot;noise_v_linear&quot; value=&quot;0&quot;/&gt;</span>
+<span class="s1">        &lt;param name=&quot;noise_v_theta&quot; value=&quot;0&quot;/&gt;</span>
+
+<span class="s1">        &lt;param name=&quot;max_a_linear&quot; value=&quot;999.0&quot;/&gt;</span>
+<span class="s1">        &lt;param name=&quot;max_a_theta&quot; value=&quot;999.0&quot;/&gt;</span>
+
+<span class="s1">        &lt;param name=&quot;max_v_linear&quot; value=&quot;1.0&quot;/&gt;</span>
+<span class="s1">        &lt;param name=&quot;max_v_theta&quot; value=&quot;1.57&quot;/&gt;</span>
+
+<span class="s1">        &lt;param name=&quot;rate&quot; value=&quot;100&quot;/&gt;</span>
+<span class="s1">    &lt;/node&gt;</span>
+
+<span class="s1">    &lt;node name=&quot;keyboard_control&quot; pkg=&quot;autolabor_keyboard_control&quot; type=&quot;keyboard_control_node&quot;&gt;</span>
+<span class="s1">        &lt;param name=&quot;linear_min&quot; value=&quot;0.2&quot; /&gt;</span>
+<span class="s1">        &lt;param name=&quot;linear_max&quot; value=&quot;1.0&quot; /&gt;</span>
+<span class="s1">        &lt;param name=&quot;linear_step&quot; value=&quot;0.2&quot; /&gt;</span>
+
+<span class="s1">        &lt;param name=&quot;angular_min&quot; value=&quot;0.5&quot; /&gt;</span>
+<span class="s1">        &lt;param name=&quot;angular_max&quot; value=&quot;1.57&quot; /&gt;</span>
+<span class="s1">        &lt;param name=&quot;angular_step&quot; value=&quot;0.5&quot; /&gt;</span>
+<span class="s1">    &lt;/node&gt;</span>
+
+<span class="s1">    &lt;node name=&quot;joint_state_publisher&quot; pkg=&quot;joint_state_publisher&quot; type=&quot;joint_state_publisher&quot; /&gt;</span>
+<span class="s1">    &lt;node name=&quot;robot_state_publisher&quot; pkg=&quot;robot_state_publisher&quot; type=&quot;state_publisher&quot; /&gt;</span>
+<span class="s1">    &lt;node name=&quot;rviz&quot; pkg=&quot;rviz&quot; type=&quot;rviz&quot;/&gt;</span>
+<span class="s1">&lt;/launch&gt;</span>
+<span class="s1">&#39;</span> &gt; demo_simulation_base.launch
+</pre></div>
+</div>
+<p>执行刚才我们建立的ROS脚本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch autolabor_simulation_base demo_simulation_base.launch
+</pre></div>
+</div>
+<p>此时我们会发现打开了一个窗口，如图所示</p>
+<div class="figure align-center" id="id8">
+<a class="reference internal image-reference" href="_images/rviz_1.png"><img alt="_images/rviz_1.png" src="_images/rviz_1.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">rviz窗口</span></p>
+</div>
+<p>在rviz的左侧Displays窗口，找到 Global Options -&gt; Fixed Frame，并将后面的值选成odom，如下图</p>
+<div class="figure align-center" id="id9">
+<a class="reference internal image-reference" href="_images/rviz_2.png"><img alt="_images/rviz_2.png" src="_images/rviz_2.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">修改Fixed Frame</span></p>
+</div>
+<p>点击rviz左下角的Add按钮，在跳出的窗口中选择 rviz -&gt; TF，并单击OK按钮</p>
+<div class="figure align-center" id="id10">
+<a class="reference internal image-reference" href="_images/rviz_3.png"><img alt="_images/rviz_3.png" src="_images/rviz_3.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Add TF</span></p>
+</div>
+<p>同上操作步骤，点击rviz左下角的Add按钮，添加 rviz -&gt; RobotModel，并单击OK按钮</p>
+<div class="figure align-center" id="id11">
+<a class="reference internal image-reference" href="_images/rviz_4.png"><img alt="_images/rviz_4.png" src="_images/rviz_4.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Add RobotModel</span></p>
+</div>
+<p>我们在中间区域看到一个小黄车，此时我们就可以使用键盘上的上，下，左，右控制小车行进。</p>
+<div class="figure align-center" id="id12">
+<a class="reference internal image-reference" href="_images/rviz_5.gif"><img alt="_images/rviz_5.gif" src="_images/rviz_5.gif" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">控制小车行驶</span></p>
+</div>
+<p>我们再来详细看一下坐标转换关系，关闭小车模型，将视窗放大。</p>
+<div class="figure align-center" id="id13">
+<a class="reference internal image-reference" href="_images/rviz_6.gif"><img alt="_images/rviz_6.gif" src="_images/rviz_6.gif" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">TF转换关系</span></p>
+</div>
+<p>根据默认设置，base_link表示小车坐标系，随着通过键盘控制，base_link坐标系在移动，在中间两个静止的坐标系分别是odom(里程计编码器)和real_map(真实坐标系)。由于我们没有设置里程计噪音real_map和odom始终重合，也就意味着里程计信息完全准确。</p>
+<p>这个时候我们可以尝试修改ROS脚本文件demo_simulation_base.launch，将noise_v_linear改成0.2，noise_v_theta改成0.5。</p>
+<p>首先在刚才打开Terminal的窗口使用Ctrl+C，结束之前的命令，并输入下面内容。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed -i <span class="s1">&#39;s/&lt;param name=&quot;noise_v_linear&quot; value=&quot;0&quot;\/&gt;/&lt;param name=&quot;noise_v_linear&quot; value=&quot;0.2&quot;\/&gt;/&#39;</span> demo_simulation_base.launch
+sed -i <span class="s1">&#39;s/&lt;param name=&quot;noise_v_theta&quot; value=&quot;0&quot;\/&gt;/&lt;param name=&quot;noise_v_theta&quot; value=&quot;0.5&quot;\/&gt;/&#39;</span> demo_simulation_base.launch
+</pre></div>
+</div>
+<p>此时再运行该脚本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch autolabor_simulation_base demo_simulation_base.launch
+</pre></div>
+</div>
+<p>按照上面的方法在rviz中添加tf数据显示</p>
+<div class="figure align-center" id="id14">
+<a class="reference internal image-reference" href="_images/rviz_7.gif"><img alt="_images/rviz_7.gif" src="_images/rviz_7.gif" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">带噪音的情况</span></p>
+</div>
+<p>会发现在小车行驶过程中，odom和real_map之间发生相对变化，这个变化就是里程计偏离真实位置的情况。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="tf_coordinate_introduction.html" class="btn btn-neutral" title="坐标轴与坐标系" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colin Jackey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!-- autolabor_simulation_base demo -->
+<launch>
+    <arg name="model" />
+    <arg name="gui" default="false" />
+
+    <param name="use_sim_time" value="false"/>
+    <param name="robot_description" textfile="$(find autolabor_description)/urdf/autolabor_pro1.urdf" />
+    <param name="use_gui" value="$(arg gui)" />
+
+    <node pkg="autolabor_simulation_base" type="simulation_base_node" name="autolabor_driver" output="screen">
+        <param name="odom_frame" value="odom"/>
+        <param name="base_link_frame" value="base_link"/>
+        <param name="real_map_frame" value="real_map"/>
+
+        <param name="noise_v_linear" value="0.2"/>
+        <param name="noise_v_theta" value="0.5"/>
+
+        <param name="max_a_linear" value="999.0"/>
+        <param name="max_a_theta" value="999.0"/>
+
+        <param name="max_v_linear" value="1.0"/>
+        <param name="max_v_theta" value="1.57"/>
+
+        <param name="rate" value="100"/>
+    </node>
+
+    <node name="keyboard_control" pkg="autolabor_keyboard_control" type="keyboard_control_node">
+        <param name="linear_min" value="0.2" />
+        <param name="linear_max" value="1.0" />
+        <param name="linear_step" value="0.2" />
+
+        <param name="angular_min" value="0.5" />
+        <param name="angular_max" value="1.57" />
+        <param name="angular_step" value="0.5" />
+    </node>
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+    <node name="rviz" pkg="rviz" type="rviz"/>
+</launch>
+
