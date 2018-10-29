@@ -58,8 +58,6 @@
 
 项目结构
 ==================
-
-<<<<<<< HEAD
 .. code-block:: bash
 
     ├── autolabor_description             移动机器人urdf模型
@@ -107,7 +105,7 @@
     ├── README.md
     └── script                            模拟器相关脚本
         └── add_keyboard_udev             添加键盘映射脚本
-=======
+
 
 **使用现成的launch file模拟器组合**
 
