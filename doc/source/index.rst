@@ -12,11 +12,22 @@ Autolabor Simulation 是什么
 
 Autolabor Simulation是一款基于ROS（Robot Operating System）的轻量级开源轮式机器人模拟器。其能实现轮速里程计，激光雷达，机器人底盘模拟，并可自定义二维场景以及动态障碍物。并提供丰富参数配置以及接口对相应传感器以及场景的操控。
 
+<<<<<<< HEAD
 Autolabor Simulation使用ROS开发，不依赖与其他软件工具，适用于初学者学习ROS以及开发者调试导航，建图等算法。其最大的特点就是简单易上手，仅通过配置相应ROS节点即可模拟获取多种传感器数据，替换相应设备驱动即可快速移植到真实移动机器人上。
 
 
 Autolabor Simulation 包含哪些模块
 ===============================
+=======
+   getting_start
+   tf_coordinate_introduction
+   autolabor_simulation_base
+
+
+autolabor_simulation是一款基于autolabor机器人的轻量级模拟器，它完整的提供了一套
+开箱即用的ROS配置和友好的交互方式。能够模拟机器人底盘，单线激光雷达，自定义
+障碍等等数据，并且可以自由配置各个传感器的干扰数据。
+>>>>>>> 4489228a4897ea4cd57e360559401e90b0ec1ff4
 
 * autolabor_description       —— 机器人urdf模型
 * autolabor_simulation_base   —— 轮式机器人底盘模拟

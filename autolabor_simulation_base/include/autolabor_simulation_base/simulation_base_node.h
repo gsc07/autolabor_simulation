@@ -45,6 +45,7 @@ private:
   double tar_v_linear_, tar_v_theta_;
   double real_x_, real_y_, real_th_;
   double odom_x_, odom_y_, odom_th_;
+  bool   is_tf_broadcast_;
 };
 }
 

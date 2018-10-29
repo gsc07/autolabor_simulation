@@ -1,5 +1,8 @@
 #include "autolabor_simulation_lidar/simulation_lidar_node.h"
 
+#include <geometry_msgs/Transform.h>
+#include <tf/tf.h>
+
 namespace autolabor_simulation {
 
 SimulationLidar::SimulationLidar(){
@@ -11,6 +14,8 @@ SimulationLidar::SimulationLidar(){
   private_node.param("noise", noise_, 0.00);
   private_node.param("size", point_size_, 400);
   private_node.param("rate", rate_, 10);
+  private_node.param("use_topic_odom", use_topic_odom_, false);
+  private_node.param("odom_topic", odom_topic_, string("/odom"));
 
   private_node.param("stage_map_topic", stage_map_topic_, string("stage_map"));
   private_node.param("global_frame", global_frame_, string("real_map"));
@@ -62,8 +67,18 @@ double SimulationLidar::normalAngle(double theta){
 
 void SimulationLidar::getPose(tf::StampedTransform &transform, double &start_angle, double &reverse){
   double roll, pitch, yaw;
-  if (tf_.canTransform(global_frame_, lidar_frame_, ros::Time())){
-    tf_.lookupTransform(global_frame_, lidar_frame_, ros::Time(), transform);
+
+  if (use_topic_odom_) {
+    geometry_msgs::Transform gm_transform;
+    gm_transform.translation.x = odom_msg_.pose.pose.position.x;
+    gm_transform.translation.y = odom_msg_.pose.pose.position.y;
+    gm_transform.translation.z = odom_msg_.pose.pose.position.z;
+    gm_transform.rotation = odom_msg_.pose.pose.orientation;
+    tf::transformMsgToTF(gm_transform, transform);
+  } else {
+    if (tf_.canTransform(global_frame_, lidar_frame_, ros::Time())){
+      tf_.lookupTransform(global_frame_, lidar_frame_, ros::Time(), transform);
+    }
   }
 
   transform.getBasis().getRPY(roll, pitch, yaw);
@@ -199,9 +214,19 @@ void SimulationLidar::mapReceived(const nav_msgs::OccupancyGrid::ConstPtr &grid_
   map_mutex_.unlock();
 }
 
+void SimulationLidar::odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg) {
+  odom_msg_.header.frame_id = odom_msg->header.frame_id;
+  odom_msg_.child_frame_id = odom_msg->child_frame_id;
+  odom_msg_.pose = odom_msg->pose;
+  odom_msg_.twist = odom_msg->twist;
+}
+
 void SimulationLidar::run(){
   lidar_pub_ = nh_.advertise<sensor_msgs::LaserScan>("scan", 1);
   map_sub_ = nh_.subscribe<nav_msgs::OccupancyGrid>(stage_map_topic_, 1, &SimulationLidar::mapReceived, this);
+  if (use_topic_odom_) {
+    odom_sub_ = nh_.subscribe<nav_msgs::Odometry>(odom_topic_, 10, &SimulationLidar::odomCallback, this);
+  }
   pub_laser_timer_ = nh_.createTimer(ros::Duration(1.0/rate_), &SimulationLidar::pubLaserCallback, this);
   ros::spin();
 }

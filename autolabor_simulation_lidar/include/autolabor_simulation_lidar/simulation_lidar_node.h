@@ -7,6 +7,7 @@
 
 #include "sensor_msgs/LaserScan.h"
 #include "nav_msgs/OccupancyGrid.h"
+#include "nav_msgs/Odometry.h"
 
 #define ERROR          -2
 #define UNKNOWN_SPACE  -1
@@ -47,23 +48,26 @@ private:
 
   void mapReceived(const nav_msgs::OccupancyGrid::ConstPtr& grid_map);
   void pubLaserCallback(const ros::TimerEvent& event);
+  void odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg);
 
-  string global_frame_, lidar_frame_, stage_map_topic_;
+  string global_frame_, lidar_frame_, stage_map_topic_, odom_topic_;
   double min_angle_, max_angle_, step_;
   double min_dis_, max_dis_;
   double noise_;
   int point_size_;
   int rate_;
+  bool use_topic_odom_;
 
   unsigned int data_length_;
   nav_msgs::OccupancyGrid local_map_;
+  nav_msgs::Odometry odom_msg_;
 
   boost::mutex map_mutex_;
 
   tf::TransformListener tf_;
   ros::NodeHandle nh_;
   ros::Publisher lidar_pub_;
-  ros::Subscriber map_sub_;
+  ros::Subscriber map_sub_, odom_sub_;
   ros::Timer pub_laser_timer_;
 };
 }
