@@ -257,4 +257,3 @@ lidar_sim.launch的全部代码见文件 `lidar_sim.launch`_
 .. _autolabor_simulation_stage: autolabor_simulation_stage.html
 .. _autolabor_simulation_lidar: autolabor_simulation_lidar.html
 .. _lidar_sim.launch: https://github.com/gsc07/autolabor_simulation/blob/master/simulation_launch/launch/lidar_sim.launch
->>>>>>> 4489228a4897ea4cd57e360559401e90b0ec1ff4
