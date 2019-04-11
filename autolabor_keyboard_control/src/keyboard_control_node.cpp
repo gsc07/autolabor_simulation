@@ -107,7 +107,6 @@ void KeyboardControl::twistCallback(const ros::TimerEvent &){
   }
 }
 
-
 bool KeyboardControl::init(){
   const char path[] = "/dev/input/by-path";
   DIR *dev_dir = opendir(path);
@@ -156,37 +155,3 @@ int main(int argc, char *argv[]){
   keyboard_control.run();
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
