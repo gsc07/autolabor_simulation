@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-    <name>global_location_fusion</name>
+    <name>location_fusion</name>
     <version>0.0.1</version>
-    <description>The global_location_fusion package</description>
+    <description>The location_fusion package</description>
 
     <maintainer email="shichunguo@gmail.com">Colin</maintainer>
 
@@ -12,15 +12,6 @@
 
     <build_depend>roscpp</build_depend>
     <run_depend>roscpp</run_depend>
-
-    <build_depend>sensor_msgs</build_depend>
-    <run_depend>sensor_msgs</run_depend>
-
-    <build_depend>nav_msgs</build_depend>
-    <run_depend>nav_msgs</run_depend>
-
-    <build_depend>geometry_msgs</build_depend>
-    <run_depend>geometry_msgs</run_depend>
 
     <build_depend>tf</build_depend>
     <run_depend>tf</run_depend>

@@ -1,0 +1,136 @@
+# ns : TrajectoryPlannerROS
+
+##################################
+#
+#  Robot Configuration Parameters
+#
+##################################
+
+# The x acceleration limit of the robot in meters/sec^2 (double, default: 2.5)
+acc_lim_x: 1.0
+
+# The y acceleration limit of the robot in meters/sec^2 (double, default: 2.5)
+acc_lim_y: 0.0
+
+# The rotational acceleration limit of the robot in radians/sec^2 (double, default: 3.2)
+acc_lim_theta: 3.0
+
+# The maximum forward velocity allowed for the base in meters/sec (double, default: 0.5)
+max_vel_x: 0.5
+
+# The minimum forward velocity allowed for the base in meters/sec. It is useful to specify this to guarantee that velocity commands sent to a mobile base are high enough to allow the base to overcome friction. (double, default: 0.1)
+min_vel_x: 0.05
+
+# The maximum rotational velocity allowed for the base in radians/sec (double, default: 1.0)
+max_vel_theta: 0.4
+
+# The minimum rotational velocity allowed for the base in radians/sec (double, default: -1.0)
+min_vel_theta: -0.4
+
+# The minimum rotational velocity allowed for the base while performing in-place rotations in radians/sec (double, default: 0.4)
+min_in_place_vel_theta: 0.4
+
+# Speed used for driving during escapes in meters/sec. Note that it must be negative in order for the robot to actually reverse. A positive speed will cause the robot to move forward while attempting to escape. New in navigation 1.3.1 (double, default: -0.1)
+escape_vel: -0.1
+
+# Determines whether velocity commands are generated for a holonomic or non-holonomic robot. For holonomic robots, strafing velocity commands may be issued to the base. For non-holonomic robots, no strafing velocity commands will be issued. (bool, default: true)
+holonomic_robot: false
+
+##################################
+#
+#  Goal Tolerance Parameters
+#
+##################################
+
+# The tolerance in radians for the controller in yaw/rotation when achieving its goal (double, default: 0.05)
+yaw_goal_tolerance: 0.3
+
+# The tolerance in meters for the controller in the x & y distance when achieving a goal (double, default: 0.10)
+xy_goal_tolerance: 0.1
+
+# If goal tolerance is latched, if the robot ever reaches the goal xy location it will simply rotate in place, even if it ends up outside the goal tolerance while it is doing so. - New in navigation 1.3.1 (bool, default: false)
+latch_xy_goal_tolerance: false
+
+##################################
+#
+#  Forward Simulation Parameters
+#
+##################################
+
+# The amount of time to forward-simulate trajectories in seconds (double, default: 1.0)
+sim_time: 5.0
+
+# The step size, in meters, to take between points on a given trajectory (double, default: 0.025)
+sim_granularity: 0.025
+
+# The step size, in radians, to take between angular samples on a given trajectory. - New in navigation 1.3.1 (double, default: ~<name>/sim_granularity)
+angular_sim_granularity: 0.025
+
+# The number of samples to use when exploring the x velocity space (integer, default: 3)
+vx_samples: 5
+
+# The number of samples to use when exploring the theta velocity space (integer, default: 20)
+vtheta_samples: 20
+
+# The frequency at which this controller will be called in Hz. Uses searchParam to read the parameter from parent namespaces if not set in the namespace of the controller. For use with move_base, this means that you only need to set its "controller_frequency" parameter and can safely leave this one unset. - New in navigation 1.3.1 (double, default: 20.0)
+controller_frequency: 10.0
+
+
+##################################
+#
+#   Trajectory Scoring Parameters
+#
+# cost =  pdist_scale * (distance to path from the endpoint of the trajectory in map cells or meters depending on the meter_scoring parameter) 
+#  +      gdist_scale * (distance to local goal from the endpoint of the trajectory in map cells or meters depending on the meter_scoring parameter) 
+#  +      occdist_scale * (maximum obstacle cost along the trajectory in obstacle cost (0-254))
+#
+##################################
+
+# Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells. Cells are assumed by default. New in navigation 1.3.1 (bool, default: false)
+meter_scoring: false
+
+# The weighting for how much the controller should stay close to the path it was given, maximal possible value is 5.0 (double, default: 0.6)
+pdist_scale: 2.5
+
+# The weighting for how much the controller should attempt to reach its local goal, also controls speed, maximal possible value is 5.0 (double, default: 0.8)
+gdist_scale: 0.8
+
+# The weighting for how much the controller should attempt to avoid obstacles (double, default: 0.01)
+occdist_scale: 0.01
+
+# How far to look ahead in meters when scoring different in-place-rotation trajectories (double, default: 0.325)
+heading_lookahead: 0.325
+
+# Whether to score based on the robot's heading to the path or its distance from the path (bool, default: false)
+heading_scoring: false
+
+# How far to look ahead in time in seconds along the simulated trajectory when using heading scoring (double, default: 0.8)
+heading_scoring_timestep: 0.8
+
+# Whether to use the Dynamic Window Approach (DWA)_ or whether to use Trajectory Rollout (NOTE: In our experience DWA worked as well as Trajectory Rollout and is computationally less expensive. It is possible that robots with extremely poor acceleration limits could gain from running Trajectory Rollout, but we recommend trying DWA first.) (bool, default: true)
+dwa: true
+
+# Whether or not to publish the cost grid that the planner will use when planning. When true, a sensor_msgs/PointCloud2 will be available on the ~<name>/cost_cloud topic. Each point cloud represents the cost grid and has a field for each individual scoring function component as well as the overall cost for each cell, taking the scoring parameters into account. New in navigation 1.4.0 (bool, default: false)
+publish_cost_grid_pc: false
+
+# The frame to set for the cost_cloud. Should be set to the same frame as the local costmap's global frame. New in navigation 1.4.0 (string, default: odom)
+global_frame_id: map
+
+##################################
+#
+#  Oscillation Prevention Parameters
+#
+##################################
+
+# How far the robot must travel in meters before oscillation flags are reset (double, default: 0.05)
+oscillation_reset_dist: 0.05
+
+
+##################################
+#
+#      Global Plan Parameters
+#
+##################################
+
+# Defines whether or not to eat up the plan as the robot moves along the path. If set to true, points will fall off the end of the plan once the robot moves 1 meter past them. (bool, default: true)
+prune_plan: true

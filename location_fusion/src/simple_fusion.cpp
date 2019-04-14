@@ -110,4 +110,5 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "simple_fusion_node");
     autolabor_algorithm::SimpleFusion fusion;
     fusion.run();
+    return 0;
 }

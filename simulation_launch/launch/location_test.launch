@@ -22,11 +22,30 @@
     	<param name="real_map_frame" value="real_map"/>
     	<param name="location_frame" value="location"/>
 
-    	<param name="location_to_real_map_x" value="0.0"/>
-    	<param name="location_to_real_map_y" value="0.0"/>
-	<param name="location_to_real_map_yaw" value="0.0"/>
+    	<param name="location_to_real_map_x" value="1.0"/>
+    	<param name="location_to_real_map_y" value="1.0"/>
+	<param name="location_to_real_map_yaw" value="0.5"/>
  
     	<param name="rate" value="3"/>
+    </node>
+
+    <node name="location_fusion" pkg="location_fusion" type="simple_fusion">
+        <param name="map_frame" value="map" />
+        <param name="odom_frame" value="odom" />
+        <param name="base_link_frame" value="base_link" />
+
+        <param name="buffer_size" value="50" />
+        <param name="distance_interval" value="0.1" />
+        <param name="rate" value="20" />
+    </node>
+
+    <node name="path_saver" pkg="path_server" type="record_path_node">
+        <param name="map_frame" value="map" />
+        <param name="base_link_frame" value="base_link" />
+
+        <param name="odom_topic" value="odom" />
+
+        <param name="distance_interval" value="0.1" />
     </node>
 
     <node name="keyboard_control" pkg="autolabor_keyboard_control" type="keyboard_control_node">
@@ -38,6 +57,8 @@
         <param name="angular_max" value="1.57" />
         <param name="angular_step" value="0.314" />
     </node>
+
+    
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find simulation_launch)/rviz/autolabor.rviz" />
 

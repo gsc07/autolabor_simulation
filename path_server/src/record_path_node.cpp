@@ -99,5 +99,8 @@ namespace autolabor_tools {
 }
 
 int main(int argc, char **argv) {
+    ros::init(argc, argv, "record_path");
+    autolabor_tools::RecordPath recordPath;
+    recordPath.run();
     return 0;
 }

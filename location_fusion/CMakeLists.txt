@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(global_location_fusion)
+project(location_fusion)
 
 add_compile_options(-std=c++11)
 
@@ -7,9 +7,6 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     tf
     tf_conversions
-    geometry_msgs
-    sensor_msgs
-    nav_msgs
 )
 
 ###################################
