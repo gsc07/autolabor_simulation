@@ -1,7 +1,7 @@
 <library path="lib/librecord_path_planner">
     <class name="record_path_planner/RecordPathPlanner" type="autolabor_algorithm::RecordPathPlanner" base_class_type="nav_core::BaseGlobalPlanner">
         <description>
-            Just passes on path to the local planner
+            RecordPathPlanner
         </description>
     </class>
 </library>

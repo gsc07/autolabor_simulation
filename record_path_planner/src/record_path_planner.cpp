@@ -6,77 +6,71 @@ PLUGINLIB_EXPORT_CLASS(autolabor_algorithm::RecordPathPlanner, nav_core::BaseGlo
 
 namespace autolabor_algorithm {
 
-    RecordPathPlanner::RecordPathPlanner() : initialized_(false) {
+    RecordPathPlanner::RecordPathPlanner() : initialized_(false), start_index_(-1), goal_index_(-1) {
 
+    }
+
+    void RecordPathPlanner::receive_path_callback(const nav_msgs::Path::ConstPtr &msg) {
+        ROS_INFO_STREAM("RECEIVE PATH!");
+        record_path_ = *msg;
     }
 
     void RecordPathPlanner::initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros) {
         ros::NodeHandle private_nh("~/" + name);
 
-        private_nh.param("map_frame", map_frame_, std::string("map"));
-        private_nh.param("file_path", file_path_, std::string(""));
+        private_nh.param<std::string>("map_frame", map_frame_, std::string("map"));
+        private_nh.param<double>("goal_change_threshold", goal_change_threshold_, 0.1);
 
-        full_path_pub_ = private_nh.advertise<nav_msgs::Path>("full_path", 1, true);
         sub_path_pub_ = private_nh.advertise<nav_msgs::Path>("sub_path", 1, true);
-
-        if (file_path_.empty()) {
-            ROS_ERROR_STREAM("default_path_name cannot be empty!");
-            return;
-        }
-        std::ifstream is(file_path_);
-        if (!is) {
-            ROS_ERROR_STREAM("file : " + file_path_ + " not exist!");
-        } else {
-            record_path_.header.frame_id = map_frame_;
-            record_path_.header.stamp = ros::Time::now();
-            while (!is.eof()) {
-                double x, y, yaw;
-                geometry_msgs::PoseStamped poseStamped;
-                is >> x >> y >> yaw;
-                poseStamped.header.frame_id = map_frame_;
-                poseStamped.header.stamp = ros::Time::now();
-                poseStamped.pose.position.x = x;
-                poseStamped.pose.position.y = y;
-                poseStamped.pose.position.z = 0;
-                poseStamped.pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
-                record_path_.poses.push_back(poseStamped);
-            }
-            full_path_pub_.publish(record_path_);
-        }
+        path_subscribe_ = nh_.subscribe<nav_msgs::Path>("recorded_path", 10, &RecordPathPlanner::receive_path_callback, this);
         initialized_ = true;
     }
 
     bool RecordPathPlanner::makePlan(const geometry_msgs::PoseStamped &start, const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan) {
-        plan.clear();
-        if (record_path_.poses.empty()) {
-            return false;
-        } else {
-            int start_index = min_distance_index(start, record_path_);
-            int goal_index = min_distance_index(goal, record_path_);
-            int dir = start_index < goal_index ? 1 : -1;
-            for (auto i = static_cast<size_t>(start_index); i != static_cast<size_t>(goal_index); i = i + dir) {
-                plan.push_back(record_path_.poses.at(i));
-            }
 
-            nav_msgs::Path sub_path;
-            sub_path.header.frame_id = map_frame_;
-            sub_path.header.stamp = ros::Time::now();
-            sub_path.poses = plan;
-            sub_path_pub_.publish(sub_path);
-            return true;
+        if (record_path_.poses.empty()) {
+            ROS_INFO_STREAM("POSE EMPTY!");
+            return false;
+        } else if (goal.header.frame_id != map_frame_) {
+            ROS_ERROR("The goal pose passed to this planner must be in the %s frame.  It is instead in the %s frame.", map_frame_.c_str(), goal.header.frame_id.c_str());
+            return false;
+        } else if (start.header.frame_id != map_frame_) {
+            ROS_ERROR("The start pose passed to this planner must be in the %s frame.  It is instead in the %s frame.", map_frame_.c_str(), start.header.frame_id.c_str());
+            return false;
         }
+
+        // 重新设置目标点
+        if (goal_index_ == -1 || norm2(goal, goal_cache_) >= (goal_change_threshold_ * goal_change_threshold_)) {
+            plan.clear();
+            start_index_ = min_distance_index(start, record_path_);
+            goal_index_ = min_distance_index(goal, record_path_);
+            dir_ = start_index_ < goal_index_ ? 1 : -1;
+            for (auto i = static_cast<size_t>(start_index_); i != static_cast<size_t>(goal_index_); i = i + dir_) {
+                geometry_msgs::PoseStamped org = record_path_.poses.at(i);
+                org.pose.orientation = tf::createQuaternionMsgFromYaw(dir_ == 1 ? tf::getYaw(org.pose.orientation) : (tf::getYaw(org.pose.orientation) + M_PI));
+                plan.push_back(org);
+            }
+            plan_cache_ = plan;
+            goal_cache_ = goal;
+        } else {
+            if (plan_cache_.size() > 1) {
+                int tmp = 0;
+                for (auto i = 1; i < plan_cache_.size(); i++) {
+                    if (norm2(start, plan_cache_.at(static_cast<unsigned long>(i-1))) <= norm2(start, plan_cache_.at(static_cast<unsigned long>(i)))) {
+                        tmp = i-1;
+                        break;
+                    }
+                }
+                plan_cache_.erase(plan_cache_.begin(), plan_cache_.begin() + tmp);
+            }
+            plan = plan_cache_;
+        }
+
+        nav_msgs::Path sub_path;
+        sub_path.header.frame_id = map_frame_;
+        sub_path.header.stamp = ros::Time::now();
+        sub_path.poses = plan_cache_;
+        sub_path_pub_.publish(sub_path);
+        return true;
     }
 }
-
-//int main(int argc, char **argv) {
-//    std::ifstream file;
-//    file.open("/home/colin/RosProject/Workspace/catkin_simulation_dev/src/path_server/path_data/path.txt");
-//    std::string tmp;
-//    while (!file.eof()) {
-//        double a, b, c;
-//        file >> a >> b >> c;
-//        std::cout << " -> " << a << " " << b << " " << c << std::endl;
-//    }
-//    file.close();
-//    return 0;
-//}

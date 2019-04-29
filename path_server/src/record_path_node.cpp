@@ -23,7 +23,7 @@ namespace autolabor_tools {
             if (first_record_) {
                 record_data(x, y, yaw);
                 first_record_ = false;
-            } else if (norm2(cache_x_ - x, cache_y_ - y, cache_yaw_ - yaw) > (distance_interval_ * distance_interval_)) {
+            } else if (norm2(cache_x_ - x, cache_y_ - y, 0) > (distance_interval_ * distance_interval_)) {
                 record_data(x, y, yaw);
             }
         }
@@ -58,7 +58,6 @@ namespace autolabor_tools {
         private_node.param<double>("distance_interval", distance_interval_, 0.05);
 
         path_pub_ = nh_.advertise<nav_msgs::Path>("recorded_path", 1, true);
-
         odom_subscribe_ = nh_.subscribe<nav_msgs::Odometry>(odom_topic_, 10, &RecordPath::record_callback, this);
         start_record_server_ = nh_.advertiseService("start_record_path", &RecordPath::start_record, this);
         stop_record_server_ = nh_.advertiseService("stop_record_path", &RecordPath::stop_record, this);
@@ -66,7 +65,7 @@ namespace autolabor_tools {
     }
 
     bool RecordPath::start_record(path_server::SetPathName::Request &req, path_server::SetPathName::Response &res) {
-        std::string filename = req.path_name + ".txt";
+        std::string filename = req.path_name;
         if (filename.empty()) {
             filename = get_time_str();
         }
@@ -75,7 +74,7 @@ namespace autolabor_tools {
             mkdir(path.c_str(), 0777);
         }
         output_file_.close();
-        output_file_ = std::ofstream(path + filename);
+        output_file_ = std::ofstream(path + filename + ".path");
 
         path_data_.header.stamp = ros::Time::now();
         path_data_.header.frame_id = map_frame_;

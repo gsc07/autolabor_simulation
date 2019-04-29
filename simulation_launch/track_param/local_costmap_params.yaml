@@ -41,7 +41,7 @@ width: 5.0
 height: 5.0
 
 # The resolution of the map in meters/cell. (double, default: 0.05)
-resolution: 0.05
+resolution: 0.1
 
 # The x origin of the map in the global frame in meters. (double, default: 0.0)
 origin_x: 0.0

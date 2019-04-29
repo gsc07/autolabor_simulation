@@ -1,0 +1,7 @@
+<library path="lib/libloop_path_planner">
+    <class name="loop_path_planner/LoopPathPlanner" type="autolabor_algorithm::LoopPathPlanner" base_class_type="nav_core::BaseGlobalPlanner">
+        <description>
+            LoopPathPlanner
+        </description>
+    </class>
+</library>

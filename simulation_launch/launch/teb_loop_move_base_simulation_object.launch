@@ -48,7 +48,7 @@
 	<param name="object_id" value="object_0" />
 	<param name="object_frame" value="real_map" />
 	<param name="resolution" value="0.05" />
-        <rosparam param="object_footprints">[[0.1,1.2, 0.1,-1.2, -0.1,-1.2, -0.1,1.2]]</rosparam>
+        <rosparam param="object_footprints">[[0.1,0.1, 0.1,-0.1, -0.1,-0.1, -0.1,0.1]]</rosparam>
         <rosparam param="object_color">[0.0, 0.0, 1.0, 1.0]</rosparam>
     </node>
     
@@ -57,9 +57,9 @@
     	<param name="real_map_frame" value="real_map"/>
     	<param name="location_frame" value="location"/>
 
-    	<param name="location_to_real_map_x" value="1.0"/>
-    	<param name="location_to_real_map_y" value="1.0"/>
-	<param name="location_to_real_map_yaw" value="0.5"/>
+    	<param name="location_to_real_map_x" value="0.0"/>
+    	<param name="location_to_real_map_y" value="0.0"/>
+	<param name="location_to_real_map_yaw" value="0.0"/>
  
     	<param name="rate" value="3"/>
     </node>
@@ -98,12 +98,12 @@
     </node>
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-        <rosparam file="$(find simulation_launch)/track_param/move_base_params.yaml" command="load" />
+        <rosparam file="$(find simulation_launch)/track_param/teb_loop_move_base_params.yaml" command="load" />
         <rosparam file="$(find simulation_launch)/track_param/global_costmap_params.yaml" command="load" ns="global_costmap"/>
         <rosparam file="$(find simulation_launch)/track_param/local_costmap_params.yaml" command="load" ns="local_costmap"/>
-        <rosparam file="$(find simulation_launch)/track_param/record_path_global_planner_params.yaml" command="load" ns="RecordPathPlanner"/>
-        <rosparam file="$(find simulation_launch)/track_param/dwa_local_planner_params.yaml" command="load" ns="DWAPlannerROS"/>
+        <rosparam file="$(find simulation_launch)/track_param/loop_path_global_planner_params.yaml" command="load" ns="LoopPathPlanner"/>
+        <rosparam file="$(find simulation_launch)/track_param/teb_local_planner_params.yaml" command="load" ns="TebLocalPlannerROS"/>
     </node>
-
+    
     <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0.0 0.20 0.0 0.0 0.0 /base_link /lidar 10" />
 </launch>

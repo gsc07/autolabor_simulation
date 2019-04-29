@@ -25,7 +25,7 @@ min_trans_vel: 0.1
 max_vel_x: 0.3
 
 # The minimum x velocity for the robot in m/s, negative for backwards motion. (double, default: 0.0)
-min_vel_x: -0.3
+min_vel_x: 0.0
 
 # The maximum y velocity for the robot in m/s (double, default: 0.1)
 max_vel_y: 0.0
@@ -48,10 +48,10 @@ trans_stopped_vel: 0.1
 ##################################
 
 # The tolerance in radians for the controller in yaw/rotation when achieving its goal (double, default: 0.05)
-yaw_goal_tolerance: 1.0
+yaw_goal_tolerance: 0.1
 
 # The tolerance in meters for the controller in the x & y distance when achieving a goal (double, default: 0.10)
-xy_goal_tolerance: 0.2
+xy_goal_tolerance: 0.1
 
 # If goal tolerance is latched, if the robot ever reaches the goal xy location it will simply rotate in place, even if it ends up outside the goal tolerance while it is doing so. (bool, default: false)
 latch_xy_goal_tolerance: false
@@ -95,7 +95,7 @@ vtheta_samples: 5
 path_distance_bias: 64.0
 
 # The weighting for how much the controller should attempt to reach its local goal, also controls speed (double, default: 24.0)
-goal_distance_bias: 24.0
+goal_distance_bias: 8.0
 
 # The weighting for how much the controller should attempt to avoid obstacles (double, default: 0.01)
 occdist_scale: 0.5

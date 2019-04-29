@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(record_path_planner)
+project(loop_path_planner)
 
 add_compile_options(-std=c++11)
 
@@ -19,7 +19,7 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_library(record_path_planner src/record_path_planner.cpp)
-target_link_libraries(record_path_planner
+add_library(loop_path_planner src/loop_path_planner.cpp)
+target_link_libraries(loop_path_planner
     ${catkin_LIBRARIES}
     )
