@@ -9,7 +9,7 @@ namespace autolabor_simulation {
         ros::NodeHandle private_node("~");
         private_node.param<std::string>("baselink_frame", baselink_frame_, "base_link");
         private_node.param<std::string>("real_map_frame", real_map_frame_, "real_map");
-        private_node.param<std::string>("location_frame", location_frame_, "location");
+        private_node.param<std::string>("location_frame", location_frame_, "map");
         private_node.param<int>("rate", rate_, 10);
 
         //double location_to_real_map_x_, location_to_real_map_y_, location_to_real_map_yaw_;
@@ -29,7 +29,7 @@ namespace autolabor_simulation {
 
             geometry_msgs::PointStamped location_to_baselink_msg;
             location_to_baselink_msg.header.stamp = ros::Time::now();
-            location_to_baselink_msg.header.frame_id = "location_link";
+            location_to_baselink_msg.header.frame_id = location_frame_;
 
             location_to_baselink_msg.point.x = location_to_baselink.getOrigin().x();
             location_to_baselink_msg.point.y = location_to_baselink.getOrigin().y();

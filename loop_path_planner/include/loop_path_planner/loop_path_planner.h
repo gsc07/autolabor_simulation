@@ -29,6 +29,8 @@ namespace autolabor_algorithm {
 
         void reach_goal(const move_base_msgs::MoveBaseActionResult::ConstPtr &msg);
 
+        void pub_path(std::vector<geometry_msgs::PoseStamped> &plan);
+
         inline double norm2(const geometry_msgs::PoseStamped &from, geometry_msgs::PoseStamped &to) {
             double delta_x = from.pose.position.x - to.pose.position.x;
             double delta_y = from.pose.position.y - to.pose.position.y;
@@ -49,17 +51,20 @@ namespace autolabor_algorithm {
             return index;
         }
 
+        inline int positive_modulo(int i, int n) {
+            return (i % n + n) % n;
+        }
+
         inline int min_distance_index_inner(const geometry_msgs::PoseStamped &from, nav_msgs::Path &path, size_t from_index, size_t to_index) {
             int index = static_cast<int>(from_index);
             double min_value = std::numeric_limits<double>::max();
             double dis;
-            size_t start_index = std::min(from_index, to_index);
-            size_t end_index = std::max(from_index, to_index);
-            for (size_t i = start_index; i <= end_index; i++) {
-                dis = norm2(from, path.poses.at(i));
+            for (int i = static_cast<int>(from_index); positive_modulo(i, static_cast<int>(path.poses.size())) != to_index; i = i + direction_) {
+                auto tmp_index = static_cast<size_t>(positive_modulo(i, static_cast<int>(path.poses.size())));
+                dis = norm2(from, path.poses.at(tmp_index));
                 if (dis < min_value) {
                     min_value = dis;
-                    index = static_cast<int>(i);
+                    index = static_cast<int>(tmp_index);
                 }
             }
             return index;
@@ -70,7 +75,7 @@ namespace autolabor_algorithm {
         std::string map_frame_;
         double path_length_;
         bool loop_, round_;
-        double direction_;
+        int direction_;
 
         nav_msgs::Path record_path_;
         geometry_msgs::PoseStamped goal_cache_;
@@ -83,7 +88,6 @@ namespace autolabor_algorithm {
         ros::Publisher goal_pub_;
         ros::Subscriber path_subscribe_;
         ros::Subscriber result_subscribe_;
-
     };
 
 }

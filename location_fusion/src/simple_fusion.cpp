@@ -45,8 +45,8 @@ namespace autolabor_algorithm {
         tf::matrixEigenToTF(rotation_, map_to_odom_rot);
         map_to_odom_transform_.setBasis(map_to_odom_rot);
 
-        std::cout << "trans : " << trans_.x() << " " << trans_.y() << " " << std::endl;
-        std::cout << "rot : " << tf::getYaw(map_to_odom_transform_.getRotation()) << " " << std::endl << std::endl;
+//        std::cout << "trans : " << trans_.x() << " " << trans_.y() << " " << std::endl;
+//        std::cout << "rot : " << tf::getYaw(map_to_odom_transform_.getRotation()) << " " << std::endl << std::endl;
     }
 
     void SimpleFusion::position_callback(const geometry_msgs::PointStamped::ConstPtr &msg) {
@@ -73,6 +73,9 @@ namespace autolabor_algorithm {
                     limit_deque(map_points_);
                     limit_deque(odom_points_);
                     point_match();
+//                    ROS_INFO_STREAM(msg->point.x << " " << msg->point.y << " "
+//                                                 << local_transform.getOrigin().x() << " " << local_transform.getOrigin().y() << " "
+//                                                 << trans_.x() << " " << trans_.y() << " " << tf::getYaw(map_to_odom_transform_.getRotation()));
                 }
             }
 
@@ -84,7 +87,7 @@ namespace autolabor_algorithm {
         transform_stamped.header.stamp = ros::Time::now();
         transform_stamped.header.frame_id = map_frame_;
         transform_stamped.child_frame_id = odom_frame_;
-
+        // todo:判断四元数是否归一化
         tf::transformTFToMsg(map_to_odom_transform_, transform_stamped.transform);
         tf_broadcaster_.sendTransform(transform_stamped);
     }

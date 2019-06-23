@@ -1,0 +1,59 @@
+<robot name="autolabor_description">
+    <link name="base_link">
+        <visual>
+            <origin
+                    xyz="-0.363 0.3085 0.2883"
+                    rpy="0. 1.57 -1.57"/>
+            <geometry>
+                <mesh
+                        filename="package://autolabor_description/meshes/autolabor_pro1.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="0.96 0.81 0.36 1"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="lidar_front">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="0.05" radius="0.03"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+    </link>
+
+    <link name="lidar_back">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="0.05" radius="0.03"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+    </link>
+
+    <link name="tag" />
+
+    <joint name="laser_front_link_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="lidar_front"/>
+        <origin xyz="0.4435 0.003 0.05" rpy="3.14 0.0 0.0"/>
+    </joint>
+
+    <joint name="laser_back_link_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="lidar_back"/>
+        <origin xyz="-0.4355 0.0 0.05" rpy="3.14 0.0 3.14"/>
+    </joint>
+
+    <joint name="tag_link_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="tag"/>
+        <origin xyz="0.09 0.0 0.60"/>
+    </joint>
+
+</robot>

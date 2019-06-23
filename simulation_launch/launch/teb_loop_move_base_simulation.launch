@@ -55,7 +55,7 @@
     <node pkg="autolabor_simulation_location" type="simulation_location_node" name="autolabor_location" output="screen">
     	<param name="baselink_frame" value="base_link"/>
     	<param name="real_map_frame" value="real_map"/>
-    	<param name="location_frame" value="location"/>
+    	<param name="location_frame" value="map"/>
 
     	<param name="location_to_real_map_x" value="0.0"/>
     	<param name="location_to_real_map_y" value="0.0"/>
@@ -75,7 +75,7 @@
 	<param name="angular_step" value="0.314" />
     </node>
 
-    <node name="location_fusion" pkg="location_fusion" type="simple_fusion">		
+    <node name="location_fusion" pkg="location_fusion" type="simple_fusion" output="screen">		
         <param name="map_frame" value="map" />
         <param name="odom_frame" value="odom" />
         <param name="base_link_frame" value="base_link" />
@@ -94,7 +94,7 @@
 
     <node name="path_loader" pkg="path_server" type="load_path_node">
         <param name="map_frame" value="map" />
-        <param name="path_file" value="simulation_path" />
+        <param name="path_file" value="default_path" />
     </node>
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">

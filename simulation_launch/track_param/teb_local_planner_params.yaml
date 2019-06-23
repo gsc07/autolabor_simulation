@@ -13,7 +13,7 @@ feasibility_check_no_poses: 5
     
 # Robot
          
-max_vel_x: 0.5
+max_vel_x: 0.3
 max_vel_x_backwards: 0.2
 max_vel_theta: 0.5
 acc_lim_x: 0.5
@@ -62,7 +62,7 @@ weight_kinematics_forward_drive: 1
 weight_kinematics_turning_radius: 1
 weight_optimaltime: 1
 weight_obstacle: 50
-weight_viapoint: 5.0
+weight_viapoint: 50.0
 
 # Homotopy Class Planner
 

@@ -1,5 +1,5 @@
 map_frame : map
-path_length : 0.5
-direction : -1.0
+path_length : 2.0
+direction : 1.0
 loop : true
 round : false
