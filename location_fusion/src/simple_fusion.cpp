@@ -10,7 +10,7 @@ namespace autolabor_algorithm {
 
     void SimpleFusion::point_match() {
         // center of mass
-        Eigen::Vector2d p1, p2;
+        Eigen::Vector2d p1(0, 0), p2(0, 0);
         size_t point_size = map_points_.size();
         for (size_t i = 0; i < point_size; i++) {
             p1 += map_points_[i];
@@ -34,8 +34,28 @@ namespace autolabor_algorithm {
 
         Eigen::JacobiSVD<Eigen::Matrix3d> svd(W, Eigen::ComputeFullU | Eigen::ComputeFullV);
 
-        rotation_ = svd.matrixU() * (svd.matrixV().transpose());
-        trans_ = Eigen::Vector3d(p1.x(), p1.y(), 0) - rotation_ * Eigen::Vector3d(p2.x(), p2.y(), 0);
+        Eigen::Matrix3d U = svd.matrixU();
+        Eigen::Matrix3d V = svd.matrixV();
+
+
+        rotation_ = U * (V.transpose());
+
+
+        if (rotation_.determinant() > 0) {
+            trans_ = Eigen::Vector3d(p1.x(), p1.y(), 0) - rotation_ * Eigen::Vector3d(p2.x(), p2.y(), 0);
+        } else {
+            trans_ = org_trans_;
+            Eigen::Vector3d diff = Eigen::Vector3d(p1.x() - org_trans_.x(), p1.y() - org_trans_.y(), 0);
+            // p2->1  diff->2
+            double dot = p2.x() * diff.x() + p2.y() * diff.y();
+            double det = p2.x() * diff.y() - p2.y() * diff.x();
+            double angle = atan2(det, dot);
+            double c = cos(angle);
+            double s = sin(angle);
+            rotation_ << c, -s, 0,
+                s, c, 0,
+                0, 0, 1;
+        }
 
         tf::Vector3 map_to_odom_origin;
         tf::vectorEigenToTF(trans_, map_to_odom_origin);
@@ -44,6 +64,7 @@ namespace autolabor_algorithm {
         tf::Matrix3x3 map_to_odom_rot;
         tf::matrixEigenToTF(rotation_, map_to_odom_rot);
         map_to_odom_transform_.setBasis(map_to_odom_rot);
+
 
 //        std::cout << "trans : " << trans_.x() << " " << trans_.y() << " " << std::endl;
 //        std::cout << "rot : " << tf::getYaw(map_to_odom_transform_.getRotation()) << " " << std::endl << std::endl;
@@ -62,6 +83,7 @@ namespace autolabor_algorithm {
             if (start_flag_) {
                 map_points_.emplace_back(msg->point.x, msg->point.y);
                 odom_points_.emplace_back(local_transform.getOrigin().x(), local_transform.getOrigin().y());
+                org_trans_ << msg->point.x - local_transform.getOrigin().x(), msg->point.y - local_transform.getOrigin().y(), 0;
                 start_flag_ = false;
             } else {
                 Eigen::Vector2d last_odom = odom_points_.back();

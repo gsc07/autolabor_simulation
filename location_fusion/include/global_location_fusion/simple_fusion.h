@@ -65,6 +65,7 @@ namespace autolabor_algorithm {
 
         Eigen::Matrix3d rotation_;
         Eigen::Vector3d trans_;
+        Eigen::Vector3d org_trans_;
     };
 
 }
