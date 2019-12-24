@@ -43,6 +43,32 @@ source devel/setup.bash
 source ~/catkin_ws/devel/setup.bash
 ```
 
+Quick Start
+-----------
+
+在[simulation\_base](https://github.com/gsc07/autolabor_simulation/tree/master/simulation_launch/launch)中提供了很多预先配好的launch文件，下面运行一个简单的入门教程，使用autolabor\_simulation运行gmapping和move\_base控制小车在迷宫中行走:
+
+``` {.sourceCode .bash}
+# Source workspace for every terminal
+source ~/catkin_ws/devel/setup.bash
+roslaunch simulation_launch gmapping_navigation.launch
+```
+
+运行命令后，rviz会自动弹出并显示对应的信息，下面利用rviz中的 2D Nav Goal 来触发小车的自动规划吧！
+
+更多教程，可参考[doc](https://github.com/gsc07/autolabor_simulation/tree/master/doc)文件夹下的使用说明。生成命令如下：
+
+``` {.sourceCode .bash}
+# Install doc generator and its dependence
+sudo apt-get install python3-sphinx
+pip3 install --user sphinx_rtd_theme
+# Go to the doc dir and build it
+cd ~/catkin_make/src/autolabor_simulation/doc
+make html
+# Waiting for the make till it finished
+xdg-open build/html/index.html
+```
+
 项目结构
 --------
 
